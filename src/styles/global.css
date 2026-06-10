@@ -11,6 +11,8 @@
   --thumb: #ece5d6;
   --thumb-line: #d6cdbb;
   --project-mark: #dcd3c1;
+  --theme-moon: #59667a;
+  --theme-sun: #f5c84b;
 }
 
 html.dark {
@@ -25,6 +27,8 @@ html.dark {
   --thumb: #2c2922;
   --thumb-line: #484338;
   --project-mark: #3d382f;
+  --theme-moon: #93a4bd;
+  --theme-sun: #f7c948;
 }
 
 * { box-sizing: border-box; }
@@ -72,7 +76,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   border: 1px solid var(--border);
   border-radius: 50%;
   cursor: pointer;
-  color: var(--text-soft);
+  color: var(--theme-moon);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -83,7 +87,13 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   box-shadow: 0 1px 8px color-mix(in srgb, var(--text) 9%, transparent);
   transition: border-color 0.15s, color 0.15s, opacity 0.15s, transform 0.2s;
 }
-.theme-toggle:hover { border-color: var(--accent); color: var(--accent); opacity: 1; transform: rotate(10deg); }
+.theme-toggle:hover { border-color: var(--accent); color: #405269; opacity: 1; transform: rotate(10deg); }
+html.dark .theme-toggle {
+  color: var(--theme-sun);
+  border-color: color-mix(in srgb, var(--theme-sun) 34%, var(--border));
+  background: color-mix(in srgb, var(--bg-card) 82%, var(--theme-sun) 18%);
+}
+html.dark .theme-toggle:hover { border-color: var(--theme-sun); color: #ffd969; }
 html:not(.dark) .icon-sun { display: none; }
 html.dark .icon-moon { display: none; }
 
@@ -102,7 +112,7 @@ footer {
   padding: 16px 20px 28px;
   border-top: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 8px;
   font-size: 0.85rem;
