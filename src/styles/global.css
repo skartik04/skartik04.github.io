@@ -1,16 +1,16 @@
 /* ===== Theme ===== */
 :root {
-  --bg: #faf8f3;
-  --bg-card: #fffdf8;
-  --border: #e7e1d4;
+  --bg: #ffffff;
+  --bg-card: #ffffff;
+  --border: #e5e7eb;
   --text: #21201c;
-  --text-soft: #5c564a;
-  --text-faint: #9c937f;
+  --text-soft: #4f5661;
+  --text-faint: #8a929e;
   --accent: #2a7a4b;
   --link: #2a7a4b;
-  --thumb: #ece5d6;
-  --thumb-line: #d6cdbb;
-  --project-mark: #dcd3c1;
+  --thumb: #f3f4f6;
+  --thumb-line: #d7dce2;
+  --project-mark: #d9dee5;
   --theme-moon: #59667a;
   --theme-sun: #f5c84b;
 }
