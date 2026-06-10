@@ -16,10 +16,21 @@ const papers = [
   {
     title: "Teaching LLMs to Recommend and Defer in Underrepresented Epilepsy Care",
     venue: "NeurIPS 2026 (under review)",
-    authors:
-      "Shreyas Rajesh*, Kartik Sharma*, Tonmoy Monsoor, Mehmet Yigit Turali, Richard Idro, Juliana Kayaga, Robert Sebunya, Tracy Tushabe Namata, Jessica Nichole Pasqua, Vwani Roychowdhury, Rajarshi Mazumder",
+    authors: [
+      { name: "Shreyas Rajesh", equal: true },
+      { name: "Kartik Sharma", equal: true, self: true },
+      { name: "Tonmoy Monsoor" },
+      { name: "Mehmet Yigit Turali" },
+      { name: "Richard Idro" },
+      { name: "Juliana Kayaga" },
+      { name: "Robert Sebunya" },
+      { name: "Tracy Tushabe Namata" },
+      { name: "Jessica Nichole Pasqua" },
+      { name: "Vwani Roychowdhury" },
+      { name: "Rajarshi Mazumder" },
+    ],
     summary:
-      "LLM decision support for anti-seizure medication management in underrepresented epilepsy care, with site-specific adaptation and deferral to specialist review.",
+      "We study LLM decision support for anti-seizure medication management in underrepresented epilepsy care. Manana adapts recommendations to local prescribing practice and learns when to defer uncertain cases for specialist review.",
     links: [],
     tag: "paper",
   },
@@ -87,7 +98,15 @@ const projects = [
           <div>
             <p class="pub-title">{p.title}</p>
             <p class="pub-venue">{p.venue}</p>
-            <p class="pub-authors">{p.authors}</p>
+            <p class="pub-authors">
+              {p.authors.map((author, index) => (
+                <>
+                  {index > 0 && ", "}
+                  {author.self ? <strong class="author-self">{author.name}</strong> : author.name}
+                  {author.equal && "*"}
+                </>
+              ))}
+            </p>
             <p class="pub-summary">{p.summary}</p>
             {p.links.length > 0 && (
               <p class="pub-links">
@@ -188,8 +207,9 @@ const projects = [
   }
   .pub-title { margin: 0 0 2px; font-weight: 600; font-size: 1.1rem; }
   .pub-venue { margin: 0 0 2px; color: var(--text-soft); font-size: 0.92rem; }
-  .pub-authors { margin: 0 0 4px; color: var(--text-soft); font-size: 0.92rem; }
-  .pub-summary { margin: 0 0 6px; color: var(--text-soft); font-size: 0.95rem; }
+  .pub-authors { margin: 0 0 12px; color: var(--text-soft); font-size: 0.93rem; line-height: 1.55; }
+  .author-self { color: var(--text); font-weight: 700; }
+  .pub-summary { margin: 0 0 8px; max-width: 44rem; color: var(--text-soft); font-size: 1rem; line-height: 1.55; }
   .pub-links { margin: 0; display: flex; gap: 12px; }
   .pub-links a { font-weight: 500; font-size: 0.92rem; }
   .equal-note { margin: 10px 0 0; color: var(--text-faint); font-size: 0.86rem; }
