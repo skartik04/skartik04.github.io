@@ -4,10 +4,12 @@
   --bg-card: #ffffff;
   --border: #e5e7eb;
   --text: #21201c;
+  --text-strong: #111111;
   --text-soft: #4f5661;
   --text-faint: #8a929e;
-  --accent: #2a7a4b;
-  --link: #2a7a4b;
+  /* Green fallback: #2a7a4b light, #6cbf90 dark. */
+  --accent: #2f5f9f;
+  --link: #2f5f9f;
   --thumb: #f3f4f6;
   --thumb-line: #d7dce2;
   --project-mark: #d9dee5;
@@ -20,10 +22,11 @@ html.dark {
   --bg-card: #211f19;
   --border: #38342b;
   --text: #eae6dc;
+  --text-strong: #fff3d6;
   --text-soft: #b0a796;
   --text-faint: #7d7464;
-  --accent: #6cbf90;
-  --link: #6cbf90;
+  --accent: #8fb8ff;
+  --link: #8fb8ff;
   --thumb: #2c2922;
   --thumb-line: #484338;
   --project-mark: #3d382f;
