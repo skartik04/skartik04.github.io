@@ -11,23 +11,17 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft))
 const fmt = (d: Date) =>
   d.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
 
-// ----- placeholder data: replace with real content -----
+// ----- homepage data -----
 const papers = [
   {
-    title: "Paper title goes here",
-    venue: "Venue 2026",
-    authors: "Kartik Sharma, Coauthor One, Coauthor Two",
-    summary: "One-line plain-English summary of what this paper actually shows.",
-    links: [{ label: "arXiv", href: "#" }, { label: "code", href: "#" }],
+    title: "Teaching LLMs to Recommend and Defer in Underrepresented Epilepsy Care",
+    venue: "NeurIPS 2026 (under review)",
+    authors:
+      "Shreyas Rajesh*, Kartik Sharma*, Tonmoy Monsoor, Mehmet Yigit Turali, Richard Idro, Juliana Kayaga, Robert Sebunya, Tracy Tushabe Namata, Jessica Nichole Pasqua, Vwani Roychowdhury, Rajarshi Mazumder",
+    summary:
+      "LLM decision support for anti-seizure medication management in underrepresented epilepsy care, with site-specific adaptation and deferral to specialist review.",
+    links: [],
     tag: "paper",
-  },
-  {
-    title: "Another paper title here",
-    venue: "Venue 2025",
-    authors: "Coauthor One, Kartik Sharma, Coauthor Two",
-    summary: "One-line plain-English summary of what this paper actually shows.",
-    links: [{ label: "arXiv", href: "#" }],
-    tag: "draft",
   },
 ];
 
@@ -46,10 +40,6 @@ const projects = [
       <p class="tagline">PhD student · UCLA</p>
       <p class="links">
         <a href={`${base}blog/`}><i class="fa-solid fa-blog" aria-hidden="true"></i><span>Blogs</span></a>
-        <span>·</span>
-        <a href="#papers"><i class="fa-regular fa-file-lines" aria-hidden="true"></i><span>Papers</span></a>
-        <span>·</span>
-        <a href="#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i><span>Projects</span></a>
         <span>·</span>
         <a href="#"><i class="fa-regular fa-address-card" aria-hidden="true"></i><span>CV</span></a>
         <span>·</span>
@@ -99,15 +89,18 @@ const projects = [
             <p class="pub-venue">{p.venue}</p>
             <p class="pub-authors">{p.authors}</p>
             <p class="pub-summary">{p.summary}</p>
-            <p class="pub-links">
-              {p.links.map((l) => (
-                <a href={l.href}>{l.label}</a>
-              ))}
-            </p>
+            {p.links.length > 0 && (
+              <p class="pub-links">
+                {p.links.map((l) => (
+                  <a href={l.href}>{l.label}</a>
+                ))}
+              </p>
+            )}
           </div>
         </article>
       ))}
     </div>
+    <p class="equal-note">* denotes equal contribution.</p>
   </section>
 
   <!-- projects -->
@@ -199,6 +192,7 @@ const projects = [
   .pub-summary { margin: 0 0 6px; color: var(--text-soft); font-size: 0.95rem; }
   .pub-links { margin: 0; display: flex; gap: 12px; }
   .pub-links a { font-weight: 500; font-size: 0.92rem; }
+  .equal-note { margin: 10px 0 0; color: var(--text-faint); font-size: 0.86rem; }
 
   .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .project-card {
