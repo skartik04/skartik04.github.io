@@ -102,17 +102,12 @@ const projects = [
       <h1>Kartik Sharma</h1>
       <p class="tagline">PhD student · UCLA</p>
       <p class="links">
-        <a href={`${base}blog/`}><i class="fa-solid fa-blog" aria-hidden="true"></i><span>Blogs</span></a>
-        <span>·</span>
-        <a href="mailto:kartiksharma@g.ucla.edu"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span>Email</span></a>
-        <span>·</span>
-        <a href="https://github.com/skartik04"><i class="fa-brands fa-github" aria-hidden="true"></i><span>GitHub</span></a>
-        <span>·</span>
-        <a href="https://scholar.google.com/citations?user=AZ0XFh4AAAAJ&hl=en"><i class="ai ai-google-scholar" aria-hidden="true"></i><span>Google Scholar</span></a>
-        <span>·</span>
-        <a href="https://x.com/s_kartik04"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i><span>X</span></a>
-        <span>·</span>
-        <a href="https://www.linkedin.com/in/kartik-sharma-88b289221"><i class="fa-brands fa-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+        <a href={`${base}blog/`} aria-label="Blogs" title="Blogs"><i class="fa-solid fa-blog" aria-hidden="true"></i></a>
+        <a href="mailto:kartiksharma@g.ucla.edu" aria-label="Email" title="Email"><i class="fa-regular fa-envelope" aria-hidden="true"></i></a>
+        <a href="https://github.com/skartik04" aria-label="GitHub" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+        <a href="https://scholar.google.com/citations?user=AZ0XFh4AAAAJ&hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" aria-hidden="true"></i></a>
+        <a href="https://x.com/s_kartik04" aria-label="X" title="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/in/kartik-sharma-88b289221" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
       </p>
       <p class="intro">
         Three-to-four lines about what you work on and why it matters, warm but
@@ -209,9 +204,20 @@ const projects = [
   }
   h1 { font-size: 2.1rem; }
   .tagline { margin: 4px 0 8px; font-size: 1.05rem; color: var(--text-soft); }
-  .links { margin: 0 0 12px; display: flex; gap: 7px; flex-wrap: wrap; color: var(--text-faint); }
-  .links a { display: inline-flex; align-items: baseline; gap: 5px; font-weight: 600; }
-  .links i { width: 1.05em; text-align: center; font-size: 0.92em; }
+  .links { margin: 0 0 12px; display: flex; gap: 8px; flex-wrap: wrap; color: var(--text-faint); }
+  .links a {
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-faint);
+    border-radius: 50%;
+    font-weight: 600;
+  }
+  .links a:hover { color: var(--link); background: color-mix(in srgb, var(--link) 8%, transparent); text-decoration: none; }
+  .links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .links i { width: 1.05em; text-align: center; font-size: 1.05em; }
   .links .ai { font-size: 1em; }
   .intro { margin: 0; max-width: 36rem; }
   .hero-photo { justify-self: center; }
