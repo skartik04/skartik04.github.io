@@ -45,19 +45,19 @@ const projects = [
       <h1>Kartik Sharma</h1>
       <p class="tagline">PhD student · UCLA</p>
       <p class="links">
-        <a href={`${base}blog/`}><i class="fa-solid fa-blog" aria-hidden="true"></i><span>blog</span></a>
+        <a href={`${base}blog/`}><i class="fa-solid fa-blog" aria-hidden="true"></i><span>Blogs</span></a>
         <span>·</span>
-        <a href="#papers"><i class="fa-regular fa-file-lines" aria-hidden="true"></i><span>papers</span></a>
+        <a href="#papers"><i class="fa-regular fa-file-lines" aria-hidden="true"></i><span>Papers</span></a>
         <span>·</span>
-        <a href="#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i><span>projects</span></a>
+        <a href="#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i><span>Projects</span></a>
         <span>·</span>
-        <a href="#"><i class="fa-regular fa-address-card" aria-hidden="true"></i><span>cv</span></a>
+        <a href="#"><i class="fa-regular fa-address-card" aria-hidden="true"></i><span>CV</span></a>
         <span>·</span>
-        <a href="mailto:kartiksharma@g.ucla.edu"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span>email</span></a>
+        <a href="mailto:kartiksharma@g.ucla.edu"><i class="fa-regular fa-envelope" aria-hidden="true"></i><span>Email</span></a>
         <span>·</span>
-        <a href="https://github.com/skartik04"><i class="fa-brands fa-github" aria-hidden="true"></i><span>github</span></a>
+        <a href="https://github.com/skartik04"><i class="fa-brands fa-github" aria-hidden="true"></i><span>GitHub</span></a>
         <span>·</span>
-        <a href="https://scholar.google.com/citations?user=AZ0XFh4AAAAJ&hl=en"><i class="ai ai-google-scholar" aria-hidden="true"></i><span>scholar</span></a>
+        <a href="https://scholar.google.com/citations?user=AZ0XFh4AAAAJ&hl=en"><i class="ai ai-google-scholar" aria-hidden="true"></i><span>Google Scholar</span></a>
       </p>
       <p class="intro">
         Three-to-four lines about what you work on and why it matters, warm but
@@ -82,7 +82,7 @@ const projects = [
         <p class="teaser">{post.data.description}</p>
       </article>
     ))}
-    <a class="more" href={`${base}blog/`}>all posts →</a>
+    <a class="more" href={`${base}blog/`}>All Posts →</a>
   </section>
 
   <!-- papers -->
@@ -127,14 +127,14 @@ const projects = [
   <!-- reviewing -->
   <section class="section reviewing" id="reviewing">
     <h2>Reviewing</h2>
-    <p class="reviewing-line">MECHANISTIC INTERPRETABILITY WORKSHOP @ ICML '26</p>
+    <p class="reviewing-line">Mech Interp Workshop @ ICML '26</p>
   </section>
 </Base>
 
 <style>
   .hero {
     display: grid;
-    grid-template-columns: 2.1fr 0.9fr;
+    grid-template-columns: minmax(0, 1fr) 200px;
     gap: 22px;
     align-items: center;
     margin-bottom: 32px;
