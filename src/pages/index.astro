@@ -129,15 +129,21 @@ const projects = [
           about models: as noisy computational systems where algorithms, representations,
           and hardware constraints all matter.
         </p>
-        <p>
-          My recent work has been more applied and method-driven:
-          <a href="#epilepsy-care">LLM decision support for epilepsy care</a>,
-          <a href="#seizure-classification">multimodal models for seizure semiology</a>, and
-          <a href="#enmf">optimization methods for nonnegative matrix factorization</a>.
-          I see these projects as connected by a common question: how do we build models
-          that work with structured, noisy data while remaining useful enough to inspect,
-          adapt, or deploy in real settings?
-        </p>
+        <div class="intro-work">
+          <p>
+            My recent work has been more applied and method-driven:
+          </p>
+          <ul class="intro-pointers">
+            <li><a href="#epilepsy-care">LLM decision support for epilepsy care</a></li>
+            <li><a href="#seizure-classification">Multimodal models for seizure semiology</a></li>
+            <li><a href="#enmf">Optimization methods for nonnegative matrix factorization</a></li>
+          </ul>
+          <p>
+            I see these projects as connected by a common question: how do we build models
+            that work with structured, noisy data while remaining useful enough to inspect,
+            adapt, or deploy in real settings?
+          </p>
+        </div>
       </div>
     </div>
     <div class="hero-photo">
@@ -247,6 +253,14 @@ const projects = [
   .intro { margin: 0; max-width: 40rem; display: grid; gap: 12px; }
   .intro p { margin: 0; }
   .intro strong { color: var(--text-strong); font-weight: 800; }
+  .intro-work { display: grid; gap: 7px; }
+  .intro-pointers {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--text-soft);
+    line-height: 1.55;
+  }
+  .intro-pointers li { padding-left: 0.15rem; }
   .hero-photo { justify-self: center; }
   .portrait {
     width: 200px; height: 200px;
