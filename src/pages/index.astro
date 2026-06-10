@@ -30,7 +30,7 @@ const papers = [
       { name: "Rajarshi Mazumder" },
     ],
     summary:
-      "We study LLM decision support for anti-seizure medication management in underrepresented epilepsy care. Manana adapts recommendations to local prescribing practice and learns when to defer uncertain cases for specialist review.",
+      "We study LLM decision support for anti-seizure medication management in underrepresented epilepsy care, where systems must adapt to local prescribing practice and know when to defer. We introduce Manana, a multi-agent prompt-learning framework for site-specific prescribing corrections, and Bayesian prompt averaging, which treats learned prompt states as an ensemble to produce prescription probabilities, confidence scores, and deferral decisions for specialist review.",
     links: [],
     tag: "paper",
   },
@@ -184,9 +184,11 @@ const projects = [
   .more { display: inline-block; margin-top: 10px; font-weight: 500; font-size: 0.95rem; }
 
   .pub-list { display: grid; gap: 18px; }
-  .pub-item { display: grid; grid-template-columns: 96px 1fr; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .pub-item { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 16px; align-items: start; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
   .pub-item:last-child { border-bottom: none; padding-bottom: 0; }
   .thumb {
+    width: 84px;
+    height: 68px;
     min-height: 68px;
     border: 1px solid var(--border);
     border-radius: 7px;
