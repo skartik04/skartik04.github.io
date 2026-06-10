@@ -66,17 +66,24 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   top: 20px;
   right: max(18px, calc((100vw - 860px) / 2 + 20px));
   z-index: 10;
-  background: none;
-  border: none;
+  width: 30px;
+  height: 30px;
+  background: color-mix(in srgb, var(--bg-card) 86%, transparent);
+  border: 1px solid var(--border);
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1.05rem;
-  padding: 0.3rem;
+  color: var(--text-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  padding: 0;
   line-height: 1;
-  opacity: 0.62;
-  transition: opacity 0.15s, transform 0.2s;
+  opacity: 0.78;
+  box-shadow: 0 1px 8px color-mix(in srgb, var(--text) 9%, transparent);
+  transition: border-color 0.15s, color 0.15s, opacity 0.15s, transform 0.2s;
 }
-.theme-toggle:hover { opacity: 1; transform: rotate(12deg); }
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); opacity: 1; transform: rotate(10deg); }
 html:not(.dark) .icon-sun { display: none; }
 html.dark .icon-moon { display: none; }
 
