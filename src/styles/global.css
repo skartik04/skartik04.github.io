@@ -44,7 +44,7 @@ body { min-height: 100vh; display: flex; flex-direction: column; }
 
 main {
   width: 100%;
-  max-width: 840px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 28px 20px 64px;
   flex: 1;
@@ -64,7 +64,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .theme-toggle {
   position: fixed;
   top: 20px;
-  right: max(18px, calc((100vw - 860px) / 2 + 20px));
+  right: max(18px, calc((100vw - 980px) / 2 + 20px));
   z-index: 10;
   width: 30px;
   height: 30px;
@@ -96,7 +96,7 @@ html.dark .icon-moon { display: none; }
 
 /* ===== Footer ===== */
 footer {
-  max-width: 840px;
+  max-width: 960px;
   width: 100%;
   margin: 0 auto;
   padding: 16px 20px 28px;
