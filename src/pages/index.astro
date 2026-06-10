@@ -109,11 +109,26 @@ const projects = [
         <a href="https://x.com/s_kartik04" aria-label="X" title="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
         <a href="https://www.linkedin.com/in/kartik-sharma-88b289221" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
       </p>
-      <p class="intro">
-        Three-to-four lines about what you work on and why it matters, warm but
-        tight. What questions keep you up at night, what you're building right
-        now, and one human touch so it doesn't read like a grant abstract.
-      </p>
+      <div class="intro">
+        <p>
+          I am a PhD student in
+          <a href="https://www.ee.ucla.edu/">Electrical and Computer Engineering at UCLA</a>,
+          advised by <a href="https://samueli.ucla.edu/people/vwani-roychowdhury/">Prof. Vwani Roychowdhury</a>.
+          My current focus is post-training for reasoning models with teacher interventions:
+          how to make models improve from targeted feedback, decide when to defer, and keep
+          the reasoning process inspectable rather than only optimizing final answers.
+          I am also interested in world models: the internal structures that let a system
+          build useful abstractions of tasks, environments, and other agents.
+        </p>
+        <p>
+          Before UCLA, I completed my B.S. (Research) and M.S. (Research) in Physics at
+          <a href="https://iisc.ac.in/">IISc</a>, working with
+          <a href="https://labs.dese.iisc.ac.in/pnsil/people/">Prof. Shayan Srinivasa Garani</a>
+          on quantum-enhanced Viterbi decoding. That background still shapes how I think
+          about models: as noisy computational systems where algorithms, representations,
+          and hardware constraints all matter.
+        </p>
+      </div>
     </div>
     <div class="hero-photo">
       <div class="portrait" aria-hidden="true">KS</div>
@@ -219,7 +234,8 @@ const projects = [
   .links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .links i { width: 1.15em; text-align: center; font-size: 1.28em; }
   .links .ai { font-size: 1.2em; }
-  .intro { margin: 0; max-width: 36rem; }
+  .intro { margin: 0; max-width: 40rem; display: grid; gap: 12px; }
+  .intro p { margin: 0; }
   .hero-photo { justify-self: center; }
   .portrait {
     width: 200px; height: 200px;
