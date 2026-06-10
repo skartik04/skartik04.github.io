@@ -14,6 +14,7 @@ const fmt = (d: Date) =>
 // ----- homepage data -----
 const papers = [
   {
+    id: "epilepsy-care",
     title: "Teaching LLMs to Recommend and Defer in Underrepresented Epilepsy Care",
     venue: "NeurIPS 2026 (under review)",
     authors: [
@@ -34,6 +35,7 @@ const papers = [
     links: [],
   },
   {
+    id: "enmf",
     title: "An Exterior Method for Nonnegative Matrix Factorization",
     venue: "ICML 2026",
     authors: [
@@ -51,6 +53,7 @@ const papers = [
     ],
   },
   {
+    id: "seizure-classification",
     title: "Automated Seizure Classification Using Multimodal Large Language Models",
     venue: "medRxiv 2025",
     authors: [
@@ -126,6 +129,15 @@ const projects = [
           about models: as noisy computational systems where algorithms, representations,
           and hardware constraints all matter.
         </p>
+        <p>
+          My recent work has been more applied and method-driven:
+          <a href="#epilepsy-care">LLM decision support for epilepsy care</a>,
+          <a href="#seizure-classification">multimodal models for seizure semiology</a>, and
+          <a href="#enmf">optimization methods for nonnegative matrix factorization</a>.
+          I see these projects as connected by a common question: how do we build models
+          that work with structured, noisy data while remaining useful enough to inspect,
+          adapt, or deploy in real settings?
+        </p>
       </div>
     </div>
     <div class="hero-photo">
@@ -153,7 +165,7 @@ const projects = [
     <h2>Selected Papers</h2>
     <div class="pub-list">
       {papers.map((p) => (
-        <article class="pub-item">
+        <article class="pub-item" id={p.id}>
           <div>
             <p class="pub-title">{p.title}</p>
             <p class="pub-venue">{p.venue}</p>
@@ -261,7 +273,7 @@ const projects = [
   .more { display: inline-block; margin-top: 10px; font-weight: 500; font-size: 0.95rem; }
 
   .pub-list { display: grid; gap: 18px; }
-  .pub-item { padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .pub-item { padding-bottom: 16px; border-bottom: 1px solid var(--border); scroll-margin-top: 24px; }
   .pub-item:last-child { border-bottom: none; padding-bottom: 0; }
   .pub-title { margin: 0 0 2px; font-weight: 600; font-size: 1.1rem; }
   .pub-venue { margin: 0 0 2px; color: var(--text-soft); font-size: 0.92rem; }
