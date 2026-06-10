@@ -83,7 +83,7 @@ const projects = [
     name: "Reddit Slop",
     meta: "LLM finetuning · LoRA · Reddit",
     blurb:
-      "LoRA fine-tuning study on whether structured absurdist Reddit data can shift Llama-3.1-8B reasoning. Fifth World data improved GSM8K in the tested low-data setting, while other benchmarks showed capability and style tradeoffs.",
+      "A small LoRA fine-tuning study on how Reddit-derived content changes Llama-3.1-8B-Instruct. I trained adapters on absurdist problem/solution posts from r/fifthworldproblems and mundane slice-of-life posts from r/benignexistence, then compared them against the base model on reasoning, factuality, creativity, personality, and safety-style evaluations. The main result was content-dependent: Fifth World data improved GSM8K in the tested low-data setting, while other benchmarks often degraded or shifted the model's style.",
     links: [
       { label: "Writeup", href: "https://github.com/skartik04/reddit_slop/blob/main/reports/reddit-slop.pdf" },
       { label: "Code", href: "https://github.com/skartik04/reddit_slop" },
@@ -93,7 +93,7 @@ const projects = [
     name: "Refusal Reasoning Experiments",
     meta: "LLM safety · Refusal · Response generation",
     blurb:
-      "Codebase for studying refusal behavior and response generation across open and API-backed language models, covering harmful/harmless prompt datasets, think/no-think generation, residual collection, safety judging, and pass@k-style response analysis.",
+      "A codebase for studying refusal behavior, reasoning traces, and response generation across open and API-backed language models. It organizes harmful and harmless prompt datasets, runs think versus no-think generation, collects residual activations, labels outputs with safety judges, and analyzes pass@k-style behavior across generated responses. The goal is to make refusal behavior easier to inspect as both a generation problem and a representation-level phenomenon.",
     links: [{ label: "Code", href: "https://github.com/skartik04/reasoning" }],
   },
 ];
@@ -263,7 +263,7 @@ const projects = [
   .project-card:last-child { border-bottom: none; padding-bottom: 0; }
   .project-name { display: block; font-weight: 600; color: var(--link); }
   .project-meta { display: block; margin-top: 1px; color: var(--text-faint); font-size: 0.82rem; }
-  .project-blurb { display: block; margin-top: 6px; color: var(--text-soft); font-size: 0.9rem; line-height: 1.55; }
+  .project-blurb { display: block; margin-top: 7px; color: var(--text-soft); font-size: 0.95rem; line-height: 1.6; }
   .project-links { display: flex; gap: 12px; margin-top: 8px; font-size: 0.9rem; font-weight: 500; }
   .reviewing-line { margin: 0; color: var(--text-soft); }
 
