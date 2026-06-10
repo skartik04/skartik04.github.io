@@ -1,0 +1,102 @@
+/* ===== Theme ===== */
+:root {
+  --bg: #faf8f4;
+  --bg-card: #fffdf9;
+  --border: #ece5d8;
+  --text: #2b2a26;
+  --text-soft: #6e675c;
+  --text-faint: #a39a88;
+  --accent: #2a7a4b;
+  --link: #2456b3;
+  --thumb: #e8e1d3;
+}
+
+html.dark {
+  --bg: #181611;
+  --bg-card: #201d17;
+  --border: #36322a;
+  --text: #e8e4da;
+  --text-soft: #a59c8c;
+  --text-faint: #7a7263;
+  --accent: #5fb585;
+  --link: #7ea7e8;
+  --thumb: #2e2a22;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  width: 100%;
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem 2rem;
+  flex: 1;
+}
+
+h1, h2, h3 {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* section label */
+.label {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin: 2.4rem 0 0.7rem;
+}
+
+/* ===== Theme toggle ===== */
+.theme-toggle {
+  position: fixed;
+  top: 0.9rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.05rem;
+  padding: 0.3rem;
+  border-radius: 50%;
+  line-height: 1;
+  opacity: 0.55;
+  transition: opacity 0.15s, transform 0.2s;
+}
+.theme-toggle:hover { opacity: 1; transform: rotate(15deg); }
+html:not(.dark) .icon-sun { display: none; }
+html.dark .icon-moon { display: none; }
+
+/* ===== Footer ===== */
+footer {
+  max-width: 660px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}

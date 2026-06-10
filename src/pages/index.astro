@@ -1,0 +1,165 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const base = import.meta.env.BASE_URL;
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
+
+// ----- placeholder data: replace with real content -----
+const papers = [
+  {
+    title: "Paper title goes here",
+    venue: "Venue 2026",
+    summary: "One-line plain-English summary of what this paper actually shows.",
+    href: "#",
+    thumb: null,
+  },
+  {
+    title: "Another paper title here",
+    venue: "Venue 2025",
+    summary: "One-line plain-English summary of what this paper actually shows.",
+    href: "#",
+    thumb: null,
+  },
+];
+
+const projects = [
+  { name: "project one", blurb: "what it is, in a few words", href: "#", img: null },
+  { name: "project two", blurb: "what it is, in a few words", href: "#", img: null },
+  { name: "project three", blurb: "what it is, in a few words", href: "#", img: null },
+];
+---
+
+<Base title="Kartik Sharma">
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Kartik Sharma</h1>
+      <p class="role">ML researcher · UCLA</p>
+      <p class="links">
+        <a href={`${base}blog/`}>blog</a> ·
+        <a href="#papers">papers</a> ·
+        <a href="#projects">projects</a> ·
+        <a href="#">cv</a> ·
+        <a href="mailto:ks4.kartiksharma@gmail.com">email</a> ·
+        <a href="#">github</a> ·
+        <a href="#">scholar</a>
+      </p>
+      <p class="intro">
+        Three-to-four lines about what you work on and why it matters, warm but
+        tight. What questions keep you up at night, what you're building right
+        now, and one human touch so it doesn't read like a grant abstract.
+      </p>
+    </div>
+    <div class="portrait" aria-hidden="true">🙂</div>
+  </section>
+
+  <!-- writing -->
+  <p class="label">Writing</p>
+  <section class="writing">
+    {posts.map((post) => (
+      <article class="post-row">
+        <a href={`${base}blog/${post.id}/`}>{post.data.title}</a>
+        <span class="date">{fmt(post.data.date)}</span>
+        <p class="teaser">{post.data.description}</p>
+      </article>
+    ))}
+    <a class="all-posts" href={`${base}blog/`}>all posts →</a>
+  </section>
+
+  <!-- research -->
+  <p class="label">Research</p>
+  <section>
+    <p class="research-blurb">
+      Two or three sentences on your research questions. Concrete and short —
+      the papers below do the proving.
+    </p>
+  </section>
+
+  <!-- papers -->
+  <p class="label" id="papers">Selected papers</p>
+  <section>
+    {papers.map((p) => (
+      <article class="paper-row">
+        <div class="thumb" aria-hidden="true"></div>
+        <div>
+          <a href={p.href}>{p.title}</a>
+          <p class="paper-meta">{p.venue} · {p.summary}</p>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <!-- projects -->
+  <p class="label" id="projects">Projects</p>
+  <section class="projects">
+    {projects.map((p) => (
+      <a class="project-card" href={p.href}>
+        <div class="project-img" aria-hidden="true"></div>
+        <span class="project-name">{p.name}</span>
+        <span class="project-blurb">{p.blurb}</span>
+      </a>
+    ))}
+  </section>
+</Base>
+
+<style>
+  .hero { display: flex; gap: 1.4rem; align-items: flex-start; }
+  .hero-text { flex: 1; }
+  h1 { font-size: 1.9rem; }
+  .role { color: var(--text-soft); margin: 0.15rem 0 0; font-size: 0.95rem; }
+  .links { margin: 0.5rem 0 0; font-size: 0.9rem; }
+  .links a { color: var(--accent); }
+  .intro { margin: 0.9rem 0 0; font-size: 0.95rem; }
+  .portrait {
+    width: 120px; height: 145px; flex-shrink: 0;
+    background: var(--thumb); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.4rem;
+  }
+
+  .writing {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+  }
+  .post-row { margin-bottom: 0.7rem; }
+  .post-row a { font-size: 0.98rem; }
+  .post-row .date { float: right; color: var(--text-faint); font-size: 0.78rem; }
+  .teaser { margin: 0.1rem 0 0; color: var(--text-soft); font-size: 0.85rem; }
+  .all-posts { font-size: 0.85rem; color: var(--accent); }
+
+  .research-blurb { margin: 0; font-size: 0.95rem; }
+
+  .paper-row { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; }
+  .paper-row .thumb {
+    width: 86px; height: 60px; flex-shrink: 0;
+    background: var(--thumb); border-radius: 5px;
+  }
+  .paper-row a { font-size: 0.98rem; }
+  .paper-meta { margin: 0.15rem 0 0; color: var(--text-soft); font-size: 0.85rem; }
+
+  .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+  .project-card {
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--bg-card); padding: 0.6rem;
+    color: inherit; display: block;
+  }
+  .project-card:hover { text-decoration: none; border-color: var(--accent); }
+  .project-img { height: 70px; background: var(--thumb); border-radius: 5px; }
+  .project-name { display: block; margin-top: 0.45rem; font-size: 0.88rem; color: var(--link); }
+  .project-blurb { display: block; color: var(--text-soft); font-size: 0.78rem; }
+
+  @media (max-width: 560px) {
+    .hero { flex-direction: column-reverse; }
+    .portrait { width: 96px; height: 116px; }
+    .projects { grid-template-columns: 1fr; }
+  }
+</style>
