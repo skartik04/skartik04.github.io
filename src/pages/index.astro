@@ -56,9 +56,16 @@ const papers = [
 ];
 
 const projects = [
-  { name: "project one", blurb: "what it is, in a few words", href: "#", tag: "01" },
-  { name: "project two", blurb: "what it is, in a few words", href: "#", tag: "02" },
-  { name: "project three", blurb: "what it is, in a few words", href: "#", tag: "03" },
+  {
+    name: "Reddit Slop",
+    blurb:
+      "LoRA fine-tuning study on whether structured absurdist Reddit data can shift Llama-3.1-8B reasoning. Fifth World data improved GSM8K in the tested low-data setting, while other benchmarks showed capability and style tradeoffs.",
+    tag: "llm",
+    links: [
+      { label: "Writeup", href: "https://github.com/skartik04/reddit_slop/blob/main/reports/reddit-slop.pdf" },
+      { label: "Code", href: "https://github.com/skartik04/reddit_slop" },
+    ],
+  },
 ];
 ---
 
@@ -146,11 +153,16 @@ const projects = [
     <h2>Projects</h2>
     <div class="projects">
       {projects.map((p) => (
-        <a class="project-card" href={p.href}>
+        <article class="project-card">
           <span class="project-img" aria-hidden="true">{p.tag}</span>
           <span class="project-name">{p.name}</span>
           <span class="project-blurb">{p.blurb}</span>
-        </a>
+          <span class="project-links">
+            {p.links.map((l) => (
+              <a href={l.href}>{l.label}</a>
+            ))}
+          </span>
+        </article>
       ))}
     </div>
   </section>
@@ -235,7 +247,7 @@ const projects = [
   .pub-links a { font-weight: 500; font-size: 0.92rem; }
   .equal-note { margin: 10px 0 0; color: var(--text-faint); font-size: 0.86rem; }
 
-  .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; }
   .project-card {
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -262,6 +274,7 @@ const projects = [
   }
   .project-name { display: block; margin-top: 8px; font-weight: 600; color: var(--link); }
   .project-blurb { display: block; margin-top: 2px; color: var(--text-soft); font-size: 0.86rem; }
+  .project-links { display: flex; gap: 12px; margin-top: 8px; font-size: 0.9rem; font-weight: 500; }
   .reviewing-line { margin: 0; color: var(--text-soft); }
 
   @media (max-width: 720px) {
