@@ -34,6 +34,23 @@ const papers = [
     links: [],
   },
   {
+    title: "An Exterior Method for Nonnegative Matrix Factorization",
+    venue: "ICML 2026",
+    authors: [
+      { name: "Qiujing Lu", equal: true },
+      { name: "Tonmoy Monsoor", equal: true },
+      { name: "Ehsan Ebrahimzadeh" },
+      { name: "Kartik Sharma", self: true },
+      { name: "Vwani Roychowdhury" },
+    ],
+    summary:
+      "We propose eNMF, an exterior optimization framework for nonnegative matrix factorization that separates low-rank approximation from nonnegativity enforcement. The method starts from the optimal unconstrained factorization, rotates toward the nonnegative orthant, and then refines the solution; across real and synthetic benchmarks, it improves reconstruction error and speed over a large set of NMF baselines.",
+    links: [
+      { label: "OpenReview", href: "https://openreview.net/forum?id=qhG8ONjZK0" },
+      { label: "Code", href: "https://github.com/roychowdhuryresearch/eNMF" },
+    ],
+  },
+  {
     title: "Automated Seizure Classification Using Multimodal Large Language Models",
     venue: "medRxiv 2025",
     authors: [
@@ -53,28 +70,7 @@ const papers = [
     ],
     summary:
       "We build an MLLM pipeline that extracts clinically relevant semiological features from seizure video and audio, then uses those features to classify epileptic versus nonepileptic seizures. The study evaluates feature extraction against expert annotations across 90 events from 29 patients and frames the system as an interpretable video-based decision-support approach.",
-    links: [
-      { label: "PubMed", href: "https://pubmed.ncbi.nlm.nih.gov/41282935/" },
-      { label: "Preprint", href: "https://www.medrxiv.org/content/10.1101/2025.10.07.25337538v1" },
-      { label: "PDF", href: "https://www.medrxiv.org/content/10.1101/2025.10.07.25337538v1.full.pdf" },
-    ],
-  },
-  {
-    title: "An Exterior Method for Nonnegative Matrix Factorization",
-    venue: "ICML 2026",
-    authors: [
-      { name: "Qiujing Lu", equal: true },
-      { name: "Tonmoy Monsoor", equal: true },
-      { name: "Ehsan Ebrahimzadeh" },
-      { name: "Kartik Sharma", self: true },
-      { name: "Vwani Roychowdhury" },
-    ],
-    summary:
-      "We propose eNMF, an exterior optimization framework for nonnegative matrix factorization that separates low-rank approximation from nonnegativity enforcement. The method starts from the optimal unconstrained factorization, rotates toward the nonnegative orthant, and then refines the solution; across real and synthetic benchmarks, it improves reconstruction error and speed over a large set of NMF baselines.",
-    links: [
-      { label: "OpenReview", href: "https://openreview.net/forum?id=qhG8ONjZK0" },
-      { label: "Code", href: "https://github.com/roychowdhuryresearch/eNMF" },
-    ],
+    links: [{ label: "PubMed", href: "https://pubmed.ncbi.nlm.nih.gov/41282935/" }],
   },
 ];
 
