@@ -5,7 +5,7 @@ date: 2026-06-09
 draft: false
 ---
 
-This is a placeholder post so the Writing section has something to show.
+This is a placeholder post so the Blogs section has something to show.
 
 Kartik: replace this with your real first post — the site doesn't go public until it exists anyway. Write it in Markdown, drop it in `src/content/blog/`, done.
 
