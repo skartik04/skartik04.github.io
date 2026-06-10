@@ -32,7 +32,6 @@ const papers = [
     summary:
       "We study LLM decision support for anti-seizure medication management in underrepresented epilepsy care, where systems must adapt to local prescribing practice and know when to defer. We introduce Manana, a multi-agent prompt-learning framework for site-specific prescribing corrections, and Bayesian prompt averaging, which treats learned prompt states as an ensemble to produce prescription probabilities, confidence scores, and deferral decisions for specialist review.",
     links: [],
-    tag: "paper",
   },
   {
     title: "An Exterior Method for Nonnegative Matrix Factorization",
@@ -51,20 +50,26 @@ const papers = [
       { label: "PDF", href: "https://arxiv.org/pdf/2605.19325" },
       { label: "Code", href: "https://github.com/roychowdhuryresearch/eNMF" },
     ],
-    tag: "icml",
   },
 ];
 
 const projects = [
   {
     name: "Reddit Slop",
+    meta: "LLM finetuning · LoRA · Reddit",
     blurb:
       "LoRA fine-tuning study on whether structured absurdist Reddit data can shift Llama-3.1-8B reasoning. Fifth World data improved GSM8K in the tested low-data setting, while other benchmarks showed capability and style tradeoffs.",
-    tag: "llm",
     links: [
       { label: "Writeup", href: "https://github.com/skartik04/reddit_slop/blob/main/reports/reddit-slop.pdf" },
       { label: "Code", href: "https://github.com/skartik04/reddit_slop" },
     ],
+  },
+  {
+    name: "Safety Residual Space",
+    meta: "LLM safety · Refusal · Mechanistic analysis",
+    blurb:
+      "Analysis code for studying refusal behavior as a residual-space structure. The repo builds jailbreak datasets, compares SSFT/DPO safety variants, probes safety components, and tests interventions that shift refuse/comply behavior.",
+    links: [{ label: "Code", href: "https://github.com/skartik04/safety-residual-space" }],
   },
 ];
 ---
@@ -118,9 +123,6 @@ const projects = [
     <div class="pub-list">
       {papers.map((p) => (
         <article class="pub-item">
-          <div class="thumb" aria-hidden="true">
-            <span>{p.tag}</span>
-          </div>
           <div>
             <p class="pub-title">{p.title}</p>
             <p class="pub-venue">{p.venue}</p>
@@ -154,8 +156,8 @@ const projects = [
     <div class="projects">
       {projects.map((p) => (
         <article class="project-card">
-          <span class="project-img" aria-hidden="true">{p.tag}</span>
           <span class="project-name">{p.name}</span>
+          <span class="project-meta">{p.meta}</span>
           <span class="project-blurb">{p.blurb}</span>
           <span class="project-links">
             {p.links.map((l) => (
@@ -215,29 +217,8 @@ const projects = [
   .more { display: inline-block; margin-top: 10px; font-weight: 500; font-size: 0.95rem; }
 
   .pub-list { display: grid; gap: 18px; }
-  .pub-item { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 16px; align-items: start; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .pub-item { padding-bottom: 16px; border-bottom: 1px solid var(--border); }
   .pub-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .thumb {
-    width: 84px;
-    height: 68px;
-    min-height: 68px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    background:
-      linear-gradient(var(--thumb-line), var(--thumb-line)) 14px 20px / 52px 5px no-repeat,
-      linear-gradient(var(--thumb-line), var(--thumb-line)) 14px 32px / 66px 4px no-repeat,
-      linear-gradient(var(--thumb-line), var(--thumb-line)) 14px 43px / 44px 4px no-repeat,
-      var(--thumb);
-    color: var(--text-soft);
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding: 8px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
   .pub-title { margin: 0 0 2px; font-weight: 600; font-size: 1.1rem; }
   .pub-venue { margin: 0 0 2px; color: var(--text-soft); font-size: 0.92rem; }
   .pub-authors { margin: 0 0 12px; color: var(--text-soft); font-size: 0.93rem; line-height: 1.55; }
@@ -247,33 +228,17 @@ const projects = [
   .pub-links a { font-weight: 500; font-size: 0.92rem; }
   .equal-note { margin: 10px 0 0; color: var(--text-faint); font-size: 0.86rem; }
 
-  .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+  .projects { display: grid; gap: 14px; }
   .project-card {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg-card);
-    padding: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
     color: inherit;
     display: block;
   }
-  .project-card:hover { text-decoration: none; border-color: var(--accent); }
-  .project-img {
-    min-height: 78px;
-    border-radius: 6px;
-    background:
-      linear-gradient(135deg, transparent 0 62%, var(--project-mark) 62% 100%),
-      var(--thumb);
-    color: var(--text-soft);
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: 9px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-  }
-  .project-name { display: block; margin-top: 8px; font-weight: 600; color: var(--link); }
-  .project-blurb { display: block; margin-top: 2px; color: var(--text-soft); font-size: 0.86rem; }
+  .project-card:last-child { border-bottom: none; padding-bottom: 0; }
+  .project-name { display: block; font-weight: 600; color: var(--link); }
+  .project-meta { display: block; margin-top: 1px; color: var(--text-faint); font-size: 0.82rem; }
+  .project-blurb { display: block; margin-top: 6px; color: var(--text-soft); font-size: 0.9rem; line-height: 1.55; }
   .project-links { display: flex; gap: 12px; margin-top: 8px; font-size: 0.9rem; font-weight: 500; }
   .reviewing-line { margin: 0; color: var(--text-soft); }
 
@@ -281,7 +246,5 @@ const projects = [
     .hero { grid-template-columns: 1fr; }
     .hero-photo { justify-self: start; }
     .portrait { width: 148px; height: 148px; font-size: 2.6rem; box-shadow: inset 0 0 0 14px var(--bg-card); }
-    .pub-item { grid-template-columns: 84px 1fr; gap: 12px; }
-    .projects { grid-template-columns: 1fr; }
   }
 </style>
