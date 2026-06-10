@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { title, description = "Personal website of Kartik Sharma" } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -16,7 +17,13 @@ const { title, description = "Personal website of Kartik Sharma" } = Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Work+Sans:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
     <script is:inline>
       const saved = localStorage.getItem("theme");
       const dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -25,7 +32,7 @@ const { title, description = "Personal website of Kartik Sharma" } = Astro.props
   </head>
   <body>
     <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-      <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+      <span class="icon-sun">☀</span><span class="icon-moon">☾</span>
     </button>
 
     <main>

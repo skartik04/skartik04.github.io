@@ -6,7 +6,7 @@ const base = import.meta.env.BASE_URL;
 
 const posts = (await getCollection("blog", ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+  .slice(0, 4);
 
 const fmt = (d: Date) =>
   d.toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
@@ -16,23 +16,25 @@ const papers = [
   {
     title: "Paper title goes here",
     venue: "Venue 2026",
+    authors: "Kartik Sharma, Coauthor One, Coauthor Two",
     summary: "One-line plain-English summary of what this paper actually shows.",
-    href: "#",
-    thumb: null,
+    links: [{ label: "arXiv", href: "#" }, { label: "code", href: "#" }],
+    tag: "paper",
   },
   {
     title: "Another paper title here",
     venue: "Venue 2025",
+    authors: "Coauthor One, Kartik Sharma, Coauthor Two",
     summary: "One-line plain-English summary of what this paper actually shows.",
-    href: "#",
-    thumb: null,
+    links: [{ label: "arXiv", href: "#" }],
+    tag: "draft",
   },
 ];
 
 const projects = [
-  { name: "project one", blurb: "what it is, in a few words", href: "#", img: null },
-  { name: "project two", blurb: "what it is, in a few words", href: "#", img: null },
-  { name: "project three", blurb: "what it is, in a few words", href: "#", img: null },
+  { name: "project one", blurb: "what it is, in a few words", href: "#", tag: "01" },
+  { name: "project two", blurb: "what it is, in a few words", href: "#", tag: "02" },
+  { name: "project three", blurb: "what it is, in a few words", href: "#", tag: "03" },
 ];
 ---
 
@@ -41,14 +43,20 @@ const projects = [
   <section class="hero">
     <div class="hero-text">
       <h1>Kartik Sharma</h1>
-      <p class="role">ML researcher · UCLA</p>
+      <p class="tagline">ML researcher · UCLA</p>
       <p class="links">
-        <a href={`${base}blog/`}>blog</a> ·
-        <a href="#papers">papers</a> ·
-        <a href="#projects">projects</a> ·
-        <a href="#">cv</a> ·
-        <a href="mailto:ks4.kartiksharma@gmail.com">email</a> ·
-        <a href="#">github</a> ·
+        <a href={`${base}blog/`}>blog</a>
+        <span>·</span>
+        <a href="#papers">papers</a>
+        <span>·</span>
+        <a href="#projects">projects</a>
+        <span>·</span>
+        <a href="#">cv</a>
+        <span>·</span>
+        <a href="mailto:ks4.kartiksharma@gmail.com">email</a>
+        <span>·</span>
+        <a href="#">github</a>
+        <span>·</span>
         <a href="#">scholar</a>
       </p>
       <p class="intro">
@@ -57,25 +65,29 @@ const projects = [
         now, and one human touch so it doesn't read like a grant abstract.
       </p>
     </div>
-    <div class="portrait" aria-hidden="true">🙂</div>
+    <div class="hero-photo">
+      <div class="portrait" aria-hidden="true">KS</div>
+    </div>
   </section>
 
   <!-- writing -->
-  <p class="label">Writing</p>
-  <section class="writing">
+  <section class="section">
+    <h2>Writing</h2>
     {posts.map((post) => (
       <article class="post-row">
-        <a href={`${base}blog/${post.id}/`}>{post.data.title}</a>
-        <span class="date">{fmt(post.data.date)}</span>
+        <div class="post-line">
+          <a href={`${base}blog/${post.id}/`}>{post.data.title}</a>
+          <span class="date">{fmt(post.data.date)}</span>
+        </div>
         <p class="teaser">{post.data.description}</p>
       </article>
     ))}
-    <a class="all-posts" href={`${base}blog/`}>all posts →</a>
+    <a class="more" href={`${base}blog/`}>all posts →</a>
   </section>
 
   <!-- research -->
-  <p class="label">Research</p>
-  <section>
+  <section class="section">
+    <h2>Research</h2>
     <p class="research-blurb">
       Two or three sentences on your research questions. Concrete and short —
       the papers below do the proving.
@@ -83,83 +95,147 @@ const projects = [
   </section>
 
   <!-- papers -->
-  <p class="label" id="papers">Selected papers</p>
-  <section>
-    {papers.map((p) => (
-      <article class="paper-row">
-        <div class="thumb" aria-hidden="true"></div>
-        <div>
-          <a href={p.href}>{p.title}</a>
-          <p class="paper-meta">{p.venue} · {p.summary}</p>
-        </div>
-      </article>
-    ))}
+  <section class="section" id="papers">
+    <h2>Selected papers</h2>
+    <div class="pub-list">
+      {papers.map((p) => (
+        <article class="pub-item">
+          <div class="thumb" aria-hidden="true">
+            <span>{p.tag}</span>
+          </div>
+          <div>
+            <p class="pub-title">{p.title}</p>
+            <p class="pub-venue">{p.venue}</p>
+            <p class="pub-authors">{p.authors}</p>
+            <p class="pub-summary">{p.summary}</p>
+            <p class="pub-links">
+              {p.links.map((l) => (
+                <a href={l.href}>{l.label}</a>
+              ))}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
   </section>
 
   <!-- projects -->
-  <p class="label" id="projects">Projects</p>
-  <section class="projects">
-    {projects.map((p) => (
-      <a class="project-card" href={p.href}>
-        <div class="project-img" aria-hidden="true"></div>
-        <span class="project-name">{p.name}</span>
-        <span class="project-blurb">{p.blurb}</span>
-      </a>
-    ))}
+  <section class="section" id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      {projects.map((p) => (
+        <a class="project-card" href={p.href}>
+          <span class="project-img" aria-hidden="true">{p.tag}</span>
+          <span class="project-name">{p.name}</span>
+          <span class="project-blurb">{p.blurb}</span>
+        </a>
+      ))}
+    </div>
   </section>
 </Base>
 
 <style>
-  .hero { display: flex; gap: 1.4rem; align-items: flex-start; }
-  .hero-text { flex: 1; }
-  h1 { font-size: 1.9rem; }
-  .role { color: var(--text-soft); margin: 0.15rem 0 0; font-size: 0.95rem; }
-  .links { margin: 0.5rem 0 0; font-size: 0.9rem; }
-  .links a { color: var(--accent); }
-  .intro { margin: 0.9rem 0 0; font-size: 0.95rem; }
+  .hero {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  h1 { font-size: 2.1rem; }
+  .tagline { margin: 4px 0 8px; font-size: 1.05rem; color: var(--text-soft); }
+  .links { margin: 0 0 12px; display: flex; gap: 7px; flex-wrap: wrap; color: var(--text-faint); }
+  .links a { font-weight: 600; }
+  .intro { margin: 0; max-width: 34rem; }
+  .hero-photo { justify-self: center; }
   .portrait {
-    width: 120px; height: 145px; flex-shrink: 0;
-    background: var(--thumb); border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2.4rem;
+    width: 200px; height: 200px;
+    background: var(--thumb);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    font-family: "Work Sans", "Inter", system-ui, sans-serif;
+    font-size: 3.4rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    box-shadow: inset 0 0 0 18px var(--bg-card);
   }
 
-  .writing {
-    background: var(--bg-card);
+  .post-row { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .post-row:last-of-type { border-bottom: none; }
+  .post-line { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .post-line a { font-weight: 600; font-size: 1.05rem; }
+  .date { color: var(--text-faint); font-size: 0.85rem; white-space: nowrap; }
+  .teaser { margin: 2px 0 0; color: var(--text-soft); font-size: 0.95rem; }
+  .more { display: inline-block; margin-top: 10px; font-weight: 500; font-size: 0.95rem; }
+
+  .research-blurb { margin: 0; }
+
+  .pub-list { display: grid; gap: 18px; }
+  .pub-item { display: grid; grid-template-columns: 96px 1fr; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .pub-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .thumb {
+    min-height: 68px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background:
+      linear-gradient(var(--thumb-line), var(--thumb-line)) 14px 20px / 52px 5px no-repeat,
+      linear-gradient(var(--thumb-line), var(--thumb-line)) 14px 32px / 66px 4px no-repeat,
+      linear-gradient(var(--thumb-line), var(--thumb-line)) 14px 43px / 44px 4px no-repeat,
+      var(--thumb);
+    color: var(--text-soft);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .pub-title { margin: 0 0 2px; font-weight: 600; font-size: 1.1rem; }
+  .pub-venue { margin: 0 0 2px; color: var(--text-soft); font-size: 0.92rem; }
+  .pub-authors { margin: 0 0 4px; color: var(--text-soft); font-size: 0.92rem; }
+  .pub-summary { margin: 0 0 6px; color: var(--text-soft); font-size: 0.95rem; }
+  .pub-links { margin: 0; display: flex; gap: 12px; }
+  .pub-links a { font-weight: 500; font-size: 0.92rem; }
+
+  .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .project-card {
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 0.9rem 1.1rem;
-  }
-  .post-row { margin-bottom: 0.7rem; }
-  .post-row a { font-size: 0.98rem; }
-  .post-row .date { float: right; color: var(--text-faint); font-size: 0.78rem; }
-  .teaser { margin: 0.1rem 0 0; color: var(--text-soft); font-size: 0.85rem; }
-  .all-posts { font-size: 0.85rem; color: var(--accent); }
-
-  .research-blurb { margin: 0; font-size: 0.95rem; }
-
-  .paper-row { display: flex; gap: 0.9rem; margin-bottom: 1rem; align-items: flex-start; }
-  .paper-row .thumb {
-    width: 86px; height: 60px; flex-shrink: 0;
-    background: var(--thumb); border-radius: 5px;
-  }
-  .paper-row a { font-size: 0.98rem; }
-  .paper-meta { margin: 0.15rem 0 0; color: var(--text-soft); font-size: 0.85rem; }
-
-  .projects { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
-  .project-card {
-    border: 1px solid var(--border); border-radius: 8px;
-    background: var(--bg-card); padding: 0.6rem;
-    color: inherit; display: block;
+    background: var(--bg-card);
+    padding: 10px;
+    color: inherit;
+    display: block;
   }
   .project-card:hover { text-decoration: none; border-color: var(--accent); }
-  .project-img { height: 70px; background: var(--thumb); border-radius: 5px; }
-  .project-name { display: block; margin-top: 0.45rem; font-size: 0.88rem; color: var(--link); }
-  .project-blurb { display: block; color: var(--text-soft); font-size: 0.78rem; }
+  .project-img {
+    min-height: 78px;
+    border-radius: 6px;
+    background:
+      linear-gradient(135deg, transparent 0 62%, var(--project-mark) 62% 100%),
+      var(--thumb);
+    color: var(--text-soft);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 9px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .project-name { display: block; margin-top: 8px; font-weight: 600; color: var(--link); }
+  .project-blurb { display: block; margin-top: 2px; color: var(--text-soft); font-size: 0.86rem; }
 
-  @media (max-width: 560px) {
-    .hero { flex-direction: column-reverse; }
-    .portrait { width: 96px; height: 116px; }
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-photo { justify-self: start; }
+    .portrait { width: 148px; height: 148px; font-size: 2.6rem; box-shadow: inset 0 0 0 14px var(--bg-card); }
+    .pub-item { grid-template-columns: 84px 1fr; gap: 12px; }
     .projects { grid-template-columns: 1fr; }
   }
 </style>
