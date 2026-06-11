@@ -75,6 +75,29 @@ const papers = [
       "We build an MLLM pipeline that extracts clinically relevant semiological features from seizure video and audio, then uses those features to classify epileptic versus nonepileptic seizures. The study evaluates feature extraction against expert annotations across 90 events from 29 patients and frames the system as an interpretable video-based decision-support approach.",
     links: [{ label: "PubMed", href: "https://pubmed.ncbi.nlm.nih.gov/41282935/" }],
   },
+  {
+    id: "organoid-dynamics",
+    title: "Time-Resolved Neuronal Network Dynamics Distinguish Pathological States in Organoid Models",
+    venue: "ICASSP 2026",
+    authors: [
+      { name: "Colin M. McCrimmon" },
+      { name: "Prateik Sinha" },
+      { name: "Qing Cao" },
+      { name: "Tonmoy Monsoor" },
+      { name: "Kartik Sharma", self: true },
+      { name: "Mehmet Yigit Turali" },
+      { name: "Ranmal A. Samarasinghe" },
+      { name: "Vwani Roychowdhury" },
+    ],
+    summary:
+      "We analyze two-photon calcium imaging from human brain assembloids using time-resolved functional network features. The pipeline extracts dynamic biomarkers from neuronal activity and uses them to distinguish pathological and control organoid states, connecting biomedical signal analysis with interpretable disease-model characterization.",
+    links: [
+      {
+        label: "ICASSP",
+        href: "https://www.cmsworkshops.com/ICASSP2026/view_paper.php?PaperNum=16330&bare=1",
+      },
+    ],
+  },
 ];
 
 const projects = [
@@ -141,6 +164,10 @@ const projects = [
             <li>
               <a href="#seizure-classification">Multimodal models for seizure semiology</a>
               <span>Video/audio feature extraction for interpretable seizure classification and clinically meaningful event descriptions.</span>
+            </li>
+            <li>
+              <a href="#organoid-dynamics">Time-resolved neuronal dynamics in organoid models</a>
+              <span>Network features from calcium imaging to distinguish pathological and control brain assembloid states.</span>
             </li>
             <li>
               <a href="#enmf">Optimization methods for nonnegative matrix factorization</a>
