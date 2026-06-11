@@ -124,7 +124,7 @@ const projects = [
 <Base title="Kartik Sharma">
   <!-- hero -->
   <section class="hero">
-    <div class="hero-text">
+    <div class="hero-heading">
       <h1>Kartik Sharma</h1>
       <p class="tagline">PhD student · UCLA</p>
       <p class="links">
@@ -135,7 +135,11 @@ const projects = [
         <a href="https://x.com/s_kartik04" aria-label="X" title="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
         <a href="https://www.linkedin.com/in/kartik-sharma-88b289221" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
       </p>
-      <div class="intro">
+    </div>
+    <div class="hero-photo">
+      <div class="portrait" aria-hidden="true">KS</div>
+    </div>
+    <div class="intro">
         <p>
           I am a PhD student in
           <a href="https://www.ee.ucla.edu/">Electrical and Computer Engineering at UCLA</a>,
@@ -180,10 +184,6 @@ const projects = [
             adapt, or deploy in real settings?
           </p>
         </div>
-      </div>
-    </div>
-    <div class="hero-photo">
-      <div class="portrait" aria-hidden="true">KS</div>
     </div>
   </section>
 
@@ -265,10 +265,15 @@ const projects = [
   .hero {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 200px;
-    gap: 22px;
-    align-items: center;
+    grid-template-areas:
+      "heading photo"
+      "intro photo";
+    column-gap: 22px;
+    row-gap: 0;
+    align-items: start;
     margin-bottom: 32px;
   }
+  .hero-heading { grid-area: heading; }
   h1 { font-size: 2.1rem; }
   .tagline { margin: 4px 0 8px; font-size: 1.05rem; color: var(--text-soft); }
   .links { margin: 0 0 12px; display: flex; gap: 10px; flex-wrap: wrap; color: var(--text-faint); }
@@ -286,7 +291,7 @@ const projects = [
   .links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .links i { width: 1.15em; text-align: center; font-size: 1.28em; }
   .links .ai { font-size: 1.2em; }
-  .intro { margin: 0; max-width: 40rem; display: grid; gap: 12px; }
+  .intro { grid-area: intro; margin: 0; max-width: 40rem; display: grid; gap: 12px; }
   .intro p { margin: 0; }
   .intro strong { color: var(--text-strong); font-weight: 800; }
   .intro-work { display: grid; gap: 7px; }
@@ -304,7 +309,7 @@ const projects = [
     font-size: 0.92rem;
     line-height: 1.45;
   }
-  .hero-photo { justify-self: center; }
+  .hero-photo { grid-area: photo; justify-self: center; padding-top: 36px; }
   .portrait {
     width: 200px; height: 200px;
     background: var(--thumb);
@@ -356,8 +361,15 @@ const projects = [
   .reviewing-line { margin: 0; color: var(--text-soft); }
 
   @media (max-width: 720px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-photo { justify-self: start; }
+    .hero {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "heading"
+        "photo"
+        "intro";
+      row-gap: 10px;
+    }
+    .hero-photo { justify-self: start; padding-top: 0; }
     .portrait { width: 148px; height: 148px; font-size: 2.6rem; box-shadow: inset 0 0 0 14px var(--bg-card); }
   }
 </style>
