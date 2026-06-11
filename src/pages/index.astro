@@ -134,9 +134,18 @@ const projects = [
             My recent work has been more applied and method-driven:
           </p>
           <ul class="intro-pointers">
-            <li><a href="#epilepsy-care">LLM decision support for epilepsy care</a></li>
-            <li><a href="#seizure-classification">Multimodal models for seizure semiology</a></li>
-            <li><a href="#enmf">Optimization methods for nonnegative matrix factorization</a></li>
+            <li>
+              <a href="#epilepsy-care">LLM decision support for epilepsy care</a>
+              <span>Recommendation and deferral models for underrepresented clinical settings, where local practice and uncertainty matter.</span>
+            </li>
+            <li>
+              <a href="#seizure-classification">Multimodal models for seizure semiology</a>
+              <span>Video/audio feature extraction for interpretable seizure classification and clinically meaningful event descriptions.</span>
+            </li>
+            <li>
+              <a href="#enmf">Optimization methods for nonnegative matrix factorization</a>
+              <span>Exterior optimization methods for structured low-rank factorization under nonnegativity constraints.</span>
+            </li>
           </ul>
           <p>
             I see these projects as connected by a common question: how do we build models
@@ -261,6 +270,13 @@ const projects = [
     line-height: 1.55;
   }
   .intro-pointers li { padding-left: 0.15rem; }
+  .intro-pointers a { font-weight: 600; }
+  .intro-pointers span {
+    display: block;
+    margin-top: 1px;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
   .hero-photo { justify-self: center; }
   .portrait {
     width: 200px; height: 200px;
