@@ -1,0 +1,5 @@
+# All crawlers, including search and AI/LLM crawlers, are welcome.
+User-agent: *
+Allow: /
+
+Sitemap: https://skartik04.github.io/sitemap-index.xml

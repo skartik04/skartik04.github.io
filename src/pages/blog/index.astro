@@ -4,7 +4,8 @@ import { getCollection } from "astro:content";
 
 const base = import.meta.env.BASE_URL;
 
-const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+// Drafts are visible in local dev but excluded from prod builds.
+const posts = (await getCollection("blog", ({ data }) => !data.draft || import.meta.env.DEV)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 
@@ -13,7 +14,9 @@ const fmt = (d: Date) =>
 ---
 
 <Base title="Blogs · Kartik Sharma">
-  <a class="back" href={base}>← Kartik Sharma</a>
+  <nav class="topnav">
+    <a href={base}><i class="fa-solid fa-house" aria-hidden="true"></i> Home</a>
+  </nav>
   <h1>Blogs</h1>
   <section class="posts">
     {posts.map((post) => (
@@ -27,7 +30,8 @@ const fmt = (d: Date) =>
 </Base>
 
 <style>
-  .back { font-size: 0.9rem; font-weight: 500; }
+  .topnav { display: flex; gap: 18px; align-items: center; font-size: 0.9rem; font-weight: 500; }
+  .topnav a i { margin-right: 5px; opacity: 0.85; }
   h1 { font-size: 1.8rem; margin: 0.8rem 0 1.6rem; }
   .post-row { margin-bottom: 1.4rem; }
   .post-row a { font-size: 1.1rem; font-weight: 600; }

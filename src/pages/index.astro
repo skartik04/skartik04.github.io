@@ -4,7 +4,8 @@ import { getCollection } from "astro:content";
 
 const base = import.meta.env.BASE_URL;
 
-const posts = (await getCollection("blog", ({ data }) => !data.draft))
+// Drafts are visible in local dev (import.meta.env.DEV) but excluded from prod builds.
+const posts = (await getCollection("blog", ({ data }) => !data.draft || import.meta.env.DEV))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 4);
 
@@ -98,6 +99,21 @@ const papers = [
       },
     ],
   },
+  {
+    id: "closed-form-integrals",
+    title: "Closed Form Expressions for Certain Improper Integrals of Mathematical Physics",
+    venue: "European Physical Journal Special Topics 2024",
+    authors: [
+      { name: "B. Ananthanarayan" },
+      { name: "Tanay Pathak" },
+      { name: "Kartik Sharma", self: true },
+    ],
+    summary:
+      "We derive closed-form expressions for families of improper integrals in mathematical physics, including Ising, box, and associated integrals. The work combines the method of brackets, Mellin-Barnes representations, conic-hull residue methods, and analytic continuation to express these integrals in terms of multivariable hypergeometric functions.",
+    links: [
+      { label: "EPJ ST", href: "https://doi.org/10.1140/epjs/s11734-024-01103-8" },
+    ],
+  },
 ];
 
 const projects = [
@@ -119,9 +135,42 @@ const projects = [
     links: [{ label: "Code", href: "https://github.com/skartik04/reasoning" }],
   },
 ];
+
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Kartik Sharma",
+  url: "https://skartik04.github.io/",
+  jobTitle: "PhD Student",
+  affiliation: {
+    "@type": "CollegeOrUniversity",
+    name: "University of California, Los Angeles",
+  },
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Indian Institute of Science" },
+  knowsAbout: [
+    "Machine Learning",
+    "Large Language Models",
+    "Reasoning Models",
+    "Post-training",
+    "On-Policy Distillation",
+    "World Models",
+  ],
+  sameAs: [
+    "https://github.com/skartik04",
+    "https://scholar.google.com/citations?user=AZ0XFh4AAAAJ&hl=en",
+    "https://x.com/s_kartik04",
+    "https://www.linkedin.com/in/kartik-sharma-88b289221",
+  ],
+};
 ---
 
-<Base title="Kartik Sharma">
+<Base
+  title="Kartik Sharma"
+  description="Kartik Sharma is a PhD student in Electrical and Computer Engineering at UCLA, working on post-training for reasoning models and world models."
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+  </Fragment>
   <!-- hero -->
   <section class="hero">
     <div class="hero-heading">
@@ -154,9 +203,10 @@ const projects = [
           Before UCLA, I completed my BS-MS (Research) in
           <a href="https://physics.iisc.ac.in/">Physics at IISc</a>, working with
           <a href="https://labs.dese.iisc.ac.in/pnsil/people/">Prof. Shayan Srinivasa Garani</a>
-          on quantum-enhanced Viterbi decoding. That background still shapes how I think
-          about models: as noisy computational systems where algorithms, representations,
-          and hardware constraints all matter.
+          on quantum-enhanced Viterbi decoding. I also worked with
+          <a href="https://chep.iisc.ac.in/Personnel/anant.html">Prof. B. Ananthanarayan</a>
+          from the Centre for High Energy Physics on analytic methods for expressing
+          Feynman integrals in computable closed forms.
         </p>
         <div class="intro-work">
           <p>
@@ -164,34 +214,29 @@ const projects = [
           </p>
           <ul class="intro-pointers">
             <li>
-              <a href="#epilepsy-care">LLM decision support for epilepsy care</a>
+              <strong>LLM decision support for epilepsy care</strong>
               <span>Recommendation and deferral models for underrepresented clinical settings, where local practice and uncertainty matter.</span>
             </li>
             <li>
-              <a href="#seizure-classification">Multimodal models for seizure semiology</a>
+              <strong>Multimodal models for seizure semiology</strong>
               <span>Video/audio feature extraction for interpretable seizure classification and clinically meaningful event descriptions.</span>
             </li>
             <li>
-              <a href="#organoid-dynamics">Time-resolved neuronal dynamics in organoid models</a>
+              <strong>Time-resolved neuronal dynamics in organoid models</strong>
               <span>Network features from calcium imaging to distinguish pathological and control brain assembloid states.</span>
             </li>
             <li>
-              <a href="#enmf">Optimization methods for nonnegative matrix factorization</a>
+              <strong>Optimization methods for nonnegative matrix factorization</strong>
               <span>Exterior optimization methods for structured low-rank factorization under nonnegativity constraints.</span>
             </li>
           </ul>
-          <p>
-            I see these projects as connected by a common question: how do we build models
-            that work with structured, noisy data while remaining useful enough to inspect,
-            adapt, or deploy in real settings?
-          </p>
         </div>
     </div>
   </section>
 
   <!-- blogs -->
   <section class="section">
-    <h2>Blogs</h2>
+    <h2><a class="section-link" href={`${base}blog/`}>Blogs</a></h2>
     {posts.map((post) => (
       <article class="post-row">
         <div class="post-line">
@@ -293,7 +338,7 @@ const projects = [
   .links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .links i { width: 1.15em; text-align: center; font-size: 1.28em; }
   .links .ai { font-size: 1.2em; }
-  .intro { grid-area: intro; margin: 0; max-width: 40rem; display: grid; gap: 12px; }
+  .intro { grid-area: intro; margin: 0; max-width: 40rem; display: grid; gap: 12px; font-size: 0.95rem; line-height: 1.6; }
   .intro p { margin: 0; }
   .intro strong { color: var(--text-strong); font-weight: 800; }
   .intro-work { display: grid; gap: 7px; }
@@ -330,6 +375,9 @@ const projects = [
   }
   .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+  .section-link { color: inherit; text-decoration: none; }
+  .section-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
   .post-row { padding: 10px 0; border-bottom: 1px solid var(--border); }
   .post-row:last-of-type { border-bottom: none; }
   .post-line { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
@@ -345,7 +393,7 @@ const projects = [
   .pub-venue { margin: 0 0 2px; color: var(--text-soft); font-size: 0.92rem; }
   .pub-authors { margin: 0 0 12px; color: var(--text-soft); font-size: 0.93rem; line-height: 1.55; }
   .author-self { color: var(--text); font-weight: 700; }
-  .pub-summary { margin: 0 0 8px; max-width: 44rem; color: var(--text-soft); font-size: 1rem; line-height: 1.55; }
+  .pub-summary { margin: 0 0 8px; color: var(--text-soft); font-size: 1rem; line-height: 1.55; }
   .pub-links { margin: 0; display: flex; gap: 12px; }
   .pub-links a { font-weight: 500; font-size: 0.92rem; }
   .equal-note { margin: 10px 0 0; color: var(--text-faint); font-size: 0.86rem; }
