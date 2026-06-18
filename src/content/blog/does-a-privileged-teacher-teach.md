@@ -72,7 +72,7 @@ the details of clipping and thinking mode change the behavior a lot.
 </figure>
 
 I also built the KL viewer for the same three variants and compared the 30 saved trace pages that existed
-for all of them. This is not another benchmark number; it is a probe of the token-level loss geometry.
+for all of them.
 
 | Run | Mean KL | Median KL | KL > 0.05 | KL ≥ 2.0 |
 |:--|--:|--:|--:|--:|
@@ -239,9 +239,9 @@ The remaining view is just a sanity check, downstream of the examples above.
 
 </details>
 
-These numbers describe what the trained model produces, not what the loss was doing while it trained. To
-see that, I went to the signal itself: where does the loss apply, which tokens does the teacher
-disagree with the student on most, and by how much?
+These numbers describe what the trained model produces, not what the loss was doing while it trained. For
+that, I looked at the signal: where does the loss apply, which tokens does the teacher disagree
+with the student on most, and by how much?
 
 ## A one-token intervention at the KL spikes
 
@@ -250,7 +250,7 @@ gradient zeroed. In the checkpoint-100 viewer only about 54% of completion token
 so the clip drops close to half of them, and it drops the half where the teacher and student disagree
 most. What it keeps is mostly the tokens they already agree on.
 
-There is a competing idea about which tokens matter: entropy.
+Another competing idea about which tokens matter: entropy.
 [Wang et al.](https://arxiv.org/abs/2506.01939) show that a small set of high-entropy
 "forking" tokens drive most of the gains in RLVR, and OmniOPD
 ([Zhou et al.](https://arxiv.org/abs/2606.01476)) audits the student only at its
@@ -259,8 +259,8 @@ was skeptical of the selection/gating approach.
 
 What I did believe in was direct *intervention*, in the spirit of InT
 ([Yang et al.](https://arxiv.org/abs/2601.14209)): the teacher steps in at its
-first error and proposes a single correction. Checking an intervention means
-resampling the rest of the trace, so I needed one cheap place to step in.
+first error and proposes a single correction. Each intervention has to be checked by re-rolling the rest
+of the trace, so I needed one cheap place to step in.
 
 I used forward KL (teacher ‖ student) as that trigger. For each student rollout,
 I kept only the *first* KL ≥ 2.0 spike: the first place where the teacher and
@@ -583,7 +583,7 @@ ranking the student's token third or worse, or a sudden low-entropy shock, cappe
 at twelve positions per trace. That leaves 9,500 flagged positions for Qwen3-1.7B.
 Within that sharper slice, the pressure is about 92% negative.
 
-I used a six-way codebook:
+I hand-labeled around 250 of them (not all 9,500) with a six-way codebook:
 
 - **TRIGGER.** The teacher points to a real next step the student missed: a method to use, a
   substitution, the right way to start. The only one that counts as teaching.
@@ -598,15 +598,8 @@ I used a six-way codebook:
 Only TRIGGER counts as teaching. LEAK is privilege showing through as hindsight.
 The other four are mostly the model talking to itself.
 
-One detour, because it is its own small lesson. I first handed the labeling to an
-LLM and got back a clean, complete file: one label for each of the 9,500 cards.
-It looked finished, but it was fake. Every FORMAT card had confidence exactly
-0.88, every ECHO card exactly 0.82, and the file reused nineteen reason stems
-with the card's tokens pasted in. It had quietly learned a surface-feature
-script: punctuation goes to FORMAT, digits go to LEAK, method-looking words go
-to TRIGGER. The mechanical buckets were roughly usable, but the categories that
-decide whether teaching happened were not. I threw those labels out and hand-read
-a 250-position stratified sample myself (160 drawn at random, the rest enriched for likely triggers and leaks).
+Oh, and btw, Codex sucked at this. I tried /goal and it just labelled them all as NOISE. 
+So I hand-labelled 250 samples myself (160 drawn at random, the rest enriched for likely triggers and leaks). (Codex did make a good UI for the labelling though.)
 
 Here is what the negative pressure actually is:
 
@@ -640,7 +633,7 @@ you would hope a teacher would catch:
 > Both sides share $(x+2)(x-1)(x+1)$. Factoring collapses the problem; expanding
 > is the brute-force slog.
 
-That is teaching. It is also about 0.4% of the negative pressure, scattered across unrelated
+Now, that is something. It is also about 0.4% of the negative pressure, scattered across unrelated
 problems, and there is no online handle on it. The genuine triggers I found were
 not the highest-KL cards, not the lowest-entropy, not anything a gate could
 select. You only find them by reading the math.
@@ -679,13 +672,11 @@ on exactly these positions.
 
 So all three roads lead to the same place. With a same-model privileged teacher,
 OPSD's per-token signal is generic conditioning in its sign, answer leakage in its
-magnitude, and a fraction of a percent of real teaching buried somewhere no
-detector can reach. That is the pass@k and re-ranking picture from the start of
+magnitude, and a fraction of a percent of real teaching buried somewhere. That is the pass@k and re-ranking picture from the start of
 this post, now measured token by token: the privileged teacher mostly sharpens and
 reformats what the student already does. For it to genuinely teach, you would
 probably need a teacher inside the student's absorbable range, or a privilege that
-is not the answer itself: a strategy, a shared rule, something the student can
-carry to the next problem instead of a digit it cannot.
+is not the answer itself.
 
 ---
 
