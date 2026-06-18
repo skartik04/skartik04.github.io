@@ -27,13 +27,9 @@ function svg(c) {
   <rect width="${W}" height="${H}" fill="#fbfbf9"/>
   <rect width="16" height="${H}" fill="#b5432b"/>
   <rect x="${W - 1}" width="1" height="${H}" fill="#e6e3dd"/>
-  <text y="232" font-family="DejaVu Sans, sans-serif" font-size="62" font-weight="bold" fill="#1a1a1a">${titleSpans}</text>
-  <text x="96" y="416" font-family="DejaVu Sans, sans-serif" font-size="30" fill="#555">${esc(
+  <text y="278" font-family="DejaVu Sans, sans-serif" font-size="62" font-weight="bold" fill="#1a1a1a">${titleSpans}</text>
+  <text x="96" y="438" font-family="DejaVu Sans, sans-serif" font-size="30" fill="#555">${esc(
     c.tagline
-  )}</text>
-  <line x1="96" y1="502" x2="${W - 96}" y2="502" stroke="#e6e3dd" stroke-width="1"/>
-  <text x="96" y="548" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="bold" fill="#1a1a1a">${esc(
-    c.author
   )}</text>
 </svg>`;
 }
