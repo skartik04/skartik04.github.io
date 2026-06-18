@@ -9,7 +9,7 @@ draft: false
 
 ## Introduction
 
-As more and more compute moves towards post-training, Reinforcement learning has taken centre stage.
+As more and more compute moves toward post-training, reinforcement learning has taken center stage.
 RLVR gives models outcome-based pressure, but the signal is sparse: one reward at the end of a long
 trajectory. On-policy distillation offers something denser. Let the model generate its own rollout,
 then run a teacher over that exact trajectory and ask, token by token, what it would have preferred.
@@ -18,7 +18,7 @@ imitating another model ([Chu et al.](https://arxiv.org/abs/2501.17161); [Yue et
 
 On-policy self-distillation (OPSD) takes this to its limit ([Shenfeld et al.](https://arxiv.org/abs/2601.19897);
 [Zhao et al.](https://arxiv.org/abs/2601.18734)). The teacher is the *same* model, just handed privileged
-context, a copy holding the answer key correcting the copy that had to solve the problem cold. No bigger
+context, a copy holding the answer key, correcting the copy that had to solve the problem cold. No bigger
 model required. Sure, everyone would rather just distill Fable 5, but I guess that comes under frontier research, and Anthropic had other plans, sigh.
 
 But does the teacher actually teach? When the answer-key teacher downweights a student token, what kind of
@@ -35,7 +35,7 @@ Qwen3-1.7B to see what the training actually does. The domain is math reasoning,
 worked mostly with the 1.7B, and the 4B where noted. As in any OPSD run, the teacher is the
 same model, just handed the privileged context.
 
-Two implementation details stood out. First, when the teacher is run over the student's context during
+Two implementation details stood out. First, when the teacher was run over the student's context during
 the scoring forward pass, its context was missing the `<think>` token, even though the teacher was marked
 thinking-mode (TM) on. That mismatch produced a large KL spike on the very first token, which I come back
 to in the KL-entropy section. Second, the loss clipped the per-token KL at 0.05, which in my testing was
@@ -240,7 +240,7 @@ The remaining view is just a sanity check, downstream of the examples above.
 </details>
 
 These numbers describe what the trained model produces, not what the loss was doing while it trained. To
-see that, I went to the signal itself, where does the loss even apply, which tokens does the teacher
+see that, I went to the signal itself: where does the loss apply, which tokens does the teacher
 disagree with the student on most, and by how much?
 
 ## A one-token intervention at the KL spikes
@@ -583,17 +583,17 @@ ranking the student's token third or worse, or a sudden low-entropy shock, cappe
 at twelve positions per trace. That leaves 9,500 flagged positions for Qwen3-1.7B.
 Within that sharper slice, the pressure is about 92% negative.
 
-I labeled each flagged position by hand, using a six-way codebook:
+I used a six-way codebook:
 
-- **TRIGGER** — the teacher points to a real next step the student missed: a method to use, a
+- **TRIGGER.** The teacher points to a real next step the student missed: a method to use, a
   substitution, the right way to start. The only one that counts as teaching.
-- **LEAK** — the teacher uses something only it can see because it holds the answer: a final digit, a
+- **LEAK.** The teacher uses something only it can see because it holds the answer: a final digit, a
   count, the value of a condition. Right, but only because it peeked.
-- **FORMAT** — headers, LaTeX symbols, whitespace, bold markers. Pure formatting.
-- **NOISE** — filler words ("So", "Now", "Thus"), a renamed variable, an intermediate digit, a different
+- **FORMAT.** Headers, LaTeX symbols, whitespace, bold markers. Pure formatting.
+- **NOISE.** Filler words ("So", "Now", "Thus"), a renamed variable, an intermediate digit, a different
   but equivalent way of saying the same thing.
-- **SUPPRESS** — the teacher pushes the student off its token without offering anything better.
-- **ECHO** — the teacher just repeats the token the student already wrote.
+- **SUPPRESS.** The teacher pushes the student off its token without offering anything better.
+- **ECHO.** The teacher just repeats the token the student already wrote.
 
 Only TRIGGER counts as teaching. LEAK is privilege showing through as hindsight.
 The other four are mostly the model talking to itself.
@@ -606,7 +606,7 @@ with the card's tokens pasted in. It had quietly learned a surface-feature
 script: punctuation goes to FORMAT, digits go to LEAK, method-looking words go
 to TRIGGER. The mechanical buckets were roughly usable, but the categories that
 decide whether teaching happened were not. I threw those labels out and hand-read
-a 250-card stratified sample myself.
+a 250-position stratified sample myself (160 drawn at random, the rest enriched for likely triggers and leaks).
 
 Here is what the negative pressure actually is:
 
@@ -640,7 +640,7 @@ you would hope a teacher would catch:
 > Both sides share $(x+2)(x-1)(x+1)$. Factoring collapses the problem; expanding
 > is the brute-force slog.
 
-That is teaching. It is also about 0.3% of the signal, scattered across unrelated
+That is teaching. It is also about 0.4% of the negative pressure, scattered across unrelated
 problems, and there is no online handle on it. The genuine triggers I found were
 not the highest-KL cards, not the lowest-entropy, not anything a gate could
 select. You only find them by reading the math.
@@ -691,7 +691,6 @@ carry to the next problem instead of a digit it cannot.
 
 ## References
 
-- **DeepSeek-AI**, *DeepSeek-R1*. Reasoning traces from a large model, distilled into a 1.5B to 70B family of smaller models. arXiv [2501.12948](https://arxiv.org/abs/2501.12948).
 - **Chu et al.**, *SFT Memorizes, RL Generalizes*. SFT overfits to the training distribution; RL generalizes to unseen rule and visual variants. arXiv [2501.17161](https://arxiv.org/abs/2501.17161).
 - **Yue et al.**, *Does RLVR Incentivize Reasoning Beyond the Base Model?* RL improves pass@1 but stays pass@k-bounded by the base. arXiv [2504.13837](https://arxiv.org/abs/2504.13837).
 - **Busbridge et al.**, *Distillation Scaling Laws*. A teacher far stronger than the student transfers less, not more; the capacity gap turns distillation into output correction. arXiv [2502.08606](https://arxiv.org/abs/2502.08606).
