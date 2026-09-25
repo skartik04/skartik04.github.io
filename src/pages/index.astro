@@ -33,7 +33,10 @@ const papers = [
     ],
     summary:
       "We study LLM decision support for anti-seizure medication management in underrepresented epilepsy care, where systems must adapt to local prescribing practice and know when to defer. We introduce Manana, a multi-agent prompt-learning framework for site-specific prescribing corrections, and Bayesian prompt averaging, which treats learned prompt states as an ensemble to produce prescription probabilities, confidence scores, and deferral decisions for specialist review.",
-    links: [],
+    links: [
+      { label: "arXiv", href: "https://arxiv.org/abs/2606.31036" },
+      { label: "Code", href: "https://github.com/roychowdhuryresearch/Manana" },
+    ],
   },
   {
     id: "enmf",
@@ -275,6 +278,9 @@ const personLd = {
                 ))}
               </p>
             )}
+            {p.id === "epilepsy-care" && (
+              <p class="equal-note">* denotes equal contribution.</p>
+            )}
           </div>
         </article>
       ))}
@@ -304,6 +310,7 @@ const personLd = {
   <!-- reviewing -->
   <section class="section reviewing" id="reviewing">
     <h2>Reviewing</h2>
+    <p class="reviewing-line">ICLR 2027</p>
     <p class="reviewing-line">Mech Interp Workshop @ ICML '26</p>
     <p class="reviewing-line">Pre-to-Post Workshop @ NeurIPS '26</p>
   </section>
