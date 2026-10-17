@@ -31,6 +31,24 @@ const articleLd = {
   mainEntityOfPage: url,
   url,
 };
+
+// Citation: generated from the post's title, date, and URL so every post is citable.
+const d = post.data.date;
+const year = d.getUTCFullYear();
+const monthAbbr = d.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" }).toLowerCase();
+const stop = new Set(["a", "an", "the", "on", "of", "in", "for", "to", "and", "does", "is"]);
+const keyWord = (post.data.title.toLowerCase().match(/[a-z0-9]+/g) ?? []).find((w) => !stop.has(w)) ?? "post";
+const bibKey = `sharma${year}${keyWord}`;
+const bibtex = `@misc{${bibKey},
+  author       = {Sharma, Kartik},
+  title        = {${post.data.title}},
+  year         = {${year}},
+  month        = ${monthAbbr},
+  howpublished = {\\url{${url}}},
+  note         = {Blog post}
+}`;
+const citeDate = `${year}/${String(d.getUTCMonth() + 1).padStart(2, "0")}/${String(d.getUTCDate()).padStart(2, "0")}`;
+const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 ---
 
 <Base
@@ -41,6 +59,16 @@ const articleLd = {
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(articleLd)} />
+    <meta name="citation_title" content={post.data.title} />
+    <meta name="citation_author" content="Sharma, Kartik" />
+    <meta name="citation_publication_date" content={citeDate} />
+    <meta name="citation_online_date" content={citeDate} />
+    <meta name="citation_public_url" content={url} />
+    <meta name="citation_abstract" content={post.data.description} />
+    <meta name="DC.title" content={post.data.title} />
+    <meta name="DC.creator" content="Sharma, Kartik" />
+    <meta name="DC.date" content={d.toISOString().slice(0, 10)} />
+    <meta name="DC.type" content="Text.Blog" />
   </Fragment>
 
   <nav class="topnav">
@@ -48,7 +76,7 @@ const articleLd = {
     <a href={`${base}blog/`}><i class="fa-solid fa-blog" aria-hidden="true"></i> Blogs</a>
   </nav>
   <h1>{post.data.title}</h1>
-  <p class="date">{fmt(post.data.date)}</p>
+  <p class="date">{fmt(post.data.date)} · <a class="cite-jump" href="#citation"><i class="fa-solid fa-quote-left" aria-hidden="true"></i> Cite</a></p>
 
   {toc.length > 0 && (
     <nav class="toc" aria-label="Table of contents">
@@ -64,9 +92,32 @@ const articleLd = {
   <article class="prose">
     <Content />
   </article>
+
+  <section class="cite" id="citation" aria-labelledby="citation-title">
+    <h2 id="citation-title">Citation</h2>
+    <p class="cite-plain">Sharma, Kartik. "{post.data.title}." Blog post, {monthYear}. <a href={url}>{url}</a></p>
+    <div class="cite-bib">
+      <button type="button" class="cite-copy" aria-label="Copy BibTeX">Copy</button>
+      <pre><code id="cite-bibtex">{bibtex}</code></pre>
+    </div>
+  </section>
 </Base>
 
 <script is:inline>
+  // Copy the BibTeX citation.
+  const citeBtn = document.querySelector(".cite-copy");
+  if (citeBtn) {
+    citeBtn.addEventListener("click", async () => {
+      const txt = document.getElementById("cite-bibtex").textContent;
+      try { await navigator.clipboard.writeText(txt); } catch (e) {
+        const r = document.createRange(); r.selectNodeContents(document.getElementById("cite-bibtex"));
+        const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); document.execCommand("copy"); sel.removeAllRanges();
+      }
+      citeBtn.textContent = "Copied";
+      setTimeout(() => (citeBtn.textContent = "Copy"), 1500);
+    });
+  }
+
   // Scrollspy: highlight the current section in the sidebar TOC.
   const tocLinks = [...document.querySelectorAll(".toc a")];
   if (tocLinks.length) {
@@ -94,6 +145,24 @@ const articleLd = {
   .topnav a i { margin-right: 5px; opacity: 0.85; }
   h1 { font-size: 1.9rem; margin: 0.8rem 0 0.2rem; }
   .date { color: var(--text-faint); font-size: 0.88rem; margin: 0 0 1.6rem; }
+  .cite-jump { color: var(--text-soft); font-weight: 500; }
+  .cite-jump:hover { color: var(--accent); }
+  .cite-jump i { font-size: 0.75em; margin-right: 3px; opacity: 0.8; }
+
+  .cite { margin: 2.6rem 0 0.5rem; padding-top: 1.4rem; border-top: 1px solid var(--border); scroll-margin-top: 80px; }
+  .cite h2 { font-size: 1.25rem; margin: 0 0 0.6rem; }
+  .cite-plain { font-size: 0.92rem; color: var(--text-soft); margin: 0 0 0.9rem; overflow-wrap: anywhere; }
+  .cite-bib { position: relative; }
+  .cite-bib pre {
+    margin: 0; padding: 0.9rem 1rem; border-radius: 8px; font-size: 0.82rem; line-height: 1.55;
+    overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border);
+  }
+  .cite-copy {
+    position: absolute; top: 8px; right: 8px; font: inherit; font-size: 0.78rem; font-weight: 500;
+    padding: 0.25rem 0.65rem; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text-soft); cursor: pointer;
+  }
+  .cite-copy:hover { color: var(--accent); border-color: var(--accent); }
 
   .toc {
     border: 1px solid var(--border);
