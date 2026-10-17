@@ -76,7 +76,7 @@ const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric"
     <a href={`${base}blog/`}><i class="fa-solid fa-blog" aria-hidden="true"></i> Blogs</a>
   </nav>
   <h1>{post.data.title}</h1>
-  <p class="date">{fmt(post.data.date)} · <a class="cite-jump" href="#citation"><i class="fa-solid fa-quote-left" aria-hidden="true"></i> Cite</a></p>
+  <p class="date"><span>{fmt(post.data.date)}</span><a class="cite-jump" href="#citation"><i class="fa-solid fa-quote-left" aria-hidden="true"></i> Cite this post</a></p>
 
   {toc.length > 0 && (
     <nav class="toc" aria-label="Table of contents">
@@ -85,6 +85,7 @@ const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric"
         {toc.map((h) => (
           <li><a href={`#${h.slug}`}>{h.text}</a></li>
         ))}
+        <li><a href="#citation">Citation</a></li>
       </ol>
     </nav>
   )}
@@ -145,9 +146,15 @@ const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric"
   .topnav a i { margin-right: 5px; opacity: 0.85; }
   h1 { font-size: 1.9rem; margin: 0.8rem 0 0.2rem; }
   .date { color: var(--text-faint); font-size: 0.88rem; margin: 0 0 1.6rem; }
-  .cite-jump { color: var(--text-soft); font-weight: 500; }
-  .cite-jump:hover { color: var(--accent); }
-  .cite-jump i { font-size: 0.75em; margin-right: 3px; opacity: 0.8; }
+  .date { display: flex; align-items: center; flex-wrap: wrap; gap: 0.7rem; }
+  .cite-jump {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.28rem 0.75rem; border-radius: 999px;
+    border: 1px solid var(--accent); color: var(--accent);
+    font-size: 0.82rem; font-weight: 600; text-decoration: none;
+  }
+  .cite-jump:hover { background: var(--accent); color: var(--bg); text-decoration: none; }
+  .cite-jump i { font-size: 0.8em; }
 
   .cite { margin: 2.6rem 0 0.5rem; padding-top: 1.4rem; border-top: 1px solid var(--border); scroll-margin-top: 80px; }
   .cite h2 { font-size: 1.25rem; margin: 0 0 0.6rem; }
