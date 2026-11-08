@@ -169,8 +169,8 @@ const personLd = {
 ---
 
 <Base
-  title="Kartik Sharma"
-  description="Kartik Sharma is a PhD student in Electrical and Computer Engineering at UCLA, working on post-training for reasoning models and world models."
+  title="Kartik Sharma | ML PhD Student at UCLA · LLMs & Post-Training"
+  description="PhD student at UCLA working on large language models: post-training, reinforcement learning, and on-policy distillation for reasoning models."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
@@ -179,7 +179,7 @@ const personLd = {
   <section class="hero">
     <div class="hero-heading">
       <h1>Kartik Sharma</h1>
-      <p class="tagline">PhD student · UCLA</p>
+      <p class="tagline">ML PhD student · UCLA</p>
       <p class="links">
         <a href={`${base}blog/`} aria-label="Blogs" title="Blogs"><i class="fa-solid fa-blog" aria-hidden="true"></i></a>
         <a href="mailto:kartiksharma@g.ucla.edu" aria-label="Email" title="Email"><i class="fa-regular fa-envelope" aria-hidden="true"></i></a>
@@ -199,7 +199,8 @@ const personLd = {
           I am a PhD student in
           <a href="https://www.ee.ucla.edu/">Electrical and Computer Engineering at UCLA</a>,
           advised by <a href="https://samueli.ucla.edu/people/vwani-roychowdhury/">Prof. Vwani Roychowdhury</a>.
-          My current focus is <strong>post-training</strong> for reasoning models with teacher interventions.
+          I work on <strong>large language models</strong>, mainly <strong>post-training</strong> for reasoning
+          models: reinforcement learning and on-policy distillation with teacher interventions.
           I am also interested in <strong>world models</strong>: the internal structures that let
           a system build useful abstractions of tasks, environments, and other agents.
         </p>
@@ -217,6 +218,10 @@ const personLd = {
             My recent work has been more applied and method-driven:
           </p>
           <ul class="intro-pointers">
+            <li>
+              <strong>LLM post-training and on-policy distillation</strong>
+              <span>What a privileged teacher's token-level signal actually teaches a student model (<a href={`${base}blog/does-a-privileged-teacher-teach/`}>blog post</a>).</span>
+            </li>
             <li>
               <strong>LLM decision support for epilepsy care</strong>
               <span>Recommendation and deferral models for underrepresented clinical settings, where local practice and uncertainty matter.</span>
