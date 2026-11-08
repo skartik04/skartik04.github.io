@@ -94,6 +94,54 @@ const ogImage = new URL(image, site);
     <!-- Visitor analytics: GoatCounter (cookieless, no consent banner, no personal data).
          Counts every page since this layout wraps the whole site.
          Account "kartiksharma" -> dashboard at https://kartiksharma.goatcounter.com -->
+    <!-- Own visitor log: Cloudflare Worker in ../stats (city, timezone, network; no cookies, no IPs stored).
+         Visiting any page with #toggle-stats turns counting off/on for this browser, for both trackers. -->
+    <script is:inline>
+      (() => {
+        const SKIP = "kstats-skip";
+        try {
+          if (location.hash === "#toggle-stats") {
+            const off = !localStorage.getItem(SKIP);
+            if (off) { localStorage.setItem(SKIP, "1"); localStorage.setItem("skipgc", "t"); }
+            else { localStorage.removeItem(SKIP); localStorage.removeItem("skipgc"); }
+            history.replaceState(null, "", location.pathname + location.search);
+            alert(off ? "Your visits are no longer counted on this browser." : "Counting is back on for this browser.");
+          }
+          if (localStorage.getItem(SKIP) || /^(localhost|127\.)/.test(location.hostname)) return;
+        } catch (e) {}
+
+        const END = "https://kartik-site.skartik04.workers.dev";
+        const id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        const send = (path, body) => {
+          const data = JSON.stringify(body);
+          if (!(navigator.sendBeacon && navigator.sendBeacon(END + path, data))) {
+            fetch(END + path, { method: "POST", body: data, keepalive: true }).catch(() => {});
+          }
+        };
+        let tz = "";
+        try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
+        send("/p", {
+          id, p: location.pathname, t: document.title, r: document.referrer,
+          w: screen.width, h: screen.height, tz, l: navigator.language,
+        });
+
+        // Time the page is actually visible, and how far down it was scrolled.
+        let shown = document.visibilityState === "visible" ? Date.now() : 0, total = 0, scroll = 0;
+        addEventListener("scroll", () => {
+          const max = document.documentElement.scrollHeight - innerHeight;
+          scroll = Math.max(scroll, max > 0 ? Math.round((scrollY / max) * 100) : 100);
+        }, { passive: true });
+        const flush = () => {
+          if (shown) { total += Date.now() - shown; shown = 0; }
+          send("/e", { id, s: Math.round(total / 1000), sc: scroll });
+        };
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "hidden") flush();
+          else shown = Date.now();
+        });
+        addEventListener("pagehide", flush);
+      })();
+    </script>
     <script data-goatcounter="https://kartiksharma.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <script is:inline>
