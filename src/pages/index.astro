@@ -18,6 +18,8 @@ const papers = [
     id: "epilepsy-care",
     title: "Teaching LLMs to Recommend and Defer in Underrepresented Epilepsy Care",
     venue: "NeurIPS 2026",
+    date: "2026-06-30",
+    ids: ["arXiv:2606.31036", "doi:10.48550/arXiv.2606.31036"],
     authors: [
       { name: "Shreyas Rajesh", equal: true },
       { name: "Kartik Sharma", equal: true, self: true },
@@ -40,9 +42,33 @@ const papers = [
     ],
   },
   {
+    id: "panini-dr",
+    title: "PANINI-DR: Controlled Deep Research through Generative Semantic Workspaces",
+    venue: "arXiv 2026",
+    date: "2026-10-10",
+    ids: ["arXiv:2610.15208"],
+    authors: [
+      { name: "M. Yigit Turali", equal: true },
+      { name: "Shreyas Rajesh", equal: true },
+      { name: "M. Efe Lorasdagi" },
+      { name: "Chenda Duan" },
+      { name: "Kartik Sharma", self: true },
+      { name: "Vwani Roychowdhury" },
+    ],
+    summary:
+      "We introduce PANINI-DR, a multi-agent deep-research harness that separates coordinating the overall investigation from researching and verifying individual subquestions. A shared workspace records subquestions, dependencies, findings, and evidence, and a verification agent checks each answer against its evidence before it is reused. With a shared LLM backbone and frozen corpora, it achieves the strongest average performance against seven deep-research harnesses on BrowseComp-Plus, FRAMES, and MoNaCo, including 73.3% on BrowseComp-Plus, 16 points above the next best.",
+    links: [
+      { label: "arXiv", href: "https://arxiv.org/abs/2610.15208" },
+      { label: "Code", href: "https://github.com/roychowdhuryresearch/panini-dr" },
+      { label: "Project page", href: "https://roychowdhuryresearch.github.io/PANINI-DR_Project_Page/" },
+    ],
+  },
+  {
     id: "enmf",
     title: "An Exterior Method for Nonnegative Matrix Factorization",
     venue: "ICML 2026",
+    date: "2026-05-19",
+    ids: ["arXiv:2605.19325", "doi:10.48550/arXiv.2605.19325"],
     authors: [
       { name: "Qiujing Lu", equal: true },
       { name: "Tonmoy Monsoor", equal: true },
@@ -61,6 +87,8 @@ const papers = [
     id: "seizure-classification",
     title: "Automated Seizure Classification Using Multimodal Large Language Models",
     venue: "medRxiv 2025",
+    date: "2025",
+    ids: ["pmid:41282935"],
     authors: [
       { name: "Lina Zhang" },
       { name: "Richard Jiang" },
@@ -84,6 +112,8 @@ const papers = [
     id: "organoid-dynamics",
     title: "Time-Resolved Neuronal Network Dynamics Distinguish Pathological States in Organoid Models",
     venue: "ICASSP 2026",
+    date: "2026-03-25",
+    ids: ["doi:10.64898/2026.03.25.714227"],
     authors: [
       { name: "Colin M. McCrimmon" },
       { name: "Prateik Sinha" },
@@ -107,6 +137,8 @@ const papers = [
     id: "closed-form-integrals",
     title: "Closed Form Expressions for Certain Improper Integrals of Mathematical Physics",
     venue: "European Physical Journal Special Topics 2024",
+    date: "2024",
+    ids: ["doi:10.1140/epjs/s11734-024-01103-8"],
     authors: [
       { name: "B. Ananthanarayan" },
       { name: "Tanay Pathak" },
@@ -140,32 +172,90 @@ const projects = [
   },
 ];
 
+// Structured data for search engines and AI assistants (schema.org).
+const siteUrl = "https://skartik04.github.io/";
+const personId = `${siteUrl}#person`;
+const topic = (name: string, wiki: string) => ({ "@type": "Thing", name, sameAs: `https://en.wikipedia.org/wiki/${wiki}` });
 const personLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Kartik Sharma",
-  url: "https://skartik04.github.io/",
-  jobTitle: "PhD Student",
-  affiliation: {
-    "@type": "CollegeOrUniversity",
-    name: "University of California, Los Angeles",
-  },
-  alumniOf: { "@type": "CollegeOrUniversity", name: "Indian Institute of Science" },
-  knowsAbout: [
-    "Machine Learning",
-    "Large Language Models",
-    "Reasoning Models",
-    "Post-training",
-    "On-Policy Distillation",
-    "World Models",
-  ],
-  sameAs: [
-    "https://github.com/skartik04",
-    "https://scholar.google.com/citations?user=AZ0XFh4AAAAJ&hl=en",
-    "https://x.com/s_kartik04",
-    "https://www.linkedin.com/in/kartik-sharma-88b289221",
+  "@graph": [
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteUrl}#profile`,
+      url: siteUrl,
+      name: "Kartik Sharma | ML PhD Student at UCLA",
+      mainEntity: { "@id": personId },
+    },
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: "Kartik Sharma",
+      givenName: "Kartik",
+      familyName: "Sharma",
+      alternateName: ["Kartik Sharma (UCLA)", "skartik04", "s_kartik04", "kartiksharma4"],
+      description:
+        "PhD student at UCLA working on large language models: post-training, reinforcement learning, and on-policy distillation for reasoning models.",
+      url: siteUrl,
+      image: `${siteUrl}profile.jpg`,
+      email: "mailto:kartiksharma@g.ucla.edu",
+      jobTitle: "PhD Student",
+      affiliation: {
+        "@type": "Organization",
+        name: "Department of Electrical and Computer Engineering, UCLA",
+        url: "https://www.ee.ucla.edu/",
+        parentOrganization: { "@type": "CollegeOrUniversity", name: "University of California, Los Angeles", url: "https://www.ucla.edu/" },
+      },
+      memberOf: { "@type": "ResearchOrganization", name: "Roychowdhury Research Group", url: "https://www.vwaniroychowdhury.com/" },
+      alumniOf: { "@type": "CollegeOrUniversity", name: "Indian Institute of Science", url: "https://iisc.ac.in/" },
+      knowsAbout: [
+        topic("Large language models", "Large_language_model"),
+        topic("LLM post-training", "Fine-tuning_(deep_learning)"),
+        topic("Reinforcement learning", "Reinforcement_learning"),
+        topic("On-policy distillation", "Knowledge_distillation"),
+        topic("Reasoning models", "Reasoning_language_model"),
+        topic("World models", "World_model_(artificial_intelligence)"),
+        topic("AI safety", "AI_safety"),
+        topic("Medical AI", "Artificial_intelligence_in_healthcare"),
+        topic("Nonnegative matrix factorization", "Non-negative_matrix_factorization"),
+        topic("Mathematical physics", "Mathematical_physics"),
+      ],
+      sameAs: [
+        "https://github.com/skartik04",
+        "https://scholar.google.com/citations?user=AZ0XFh4AAAAJ",
+        "https://orcid.org/0000-0002-3116-1734",
+        "https://openreview.net/profile?id=~Kartik_Sharma5",
+        "https://www.semanticscholar.org/author/2300153094",
+        "https://huggingface.co/kartiksharma4",
+        "https://www.alphaxiv.org/@kartik-sharma-3",
+        "https://x.com/s_kartik04",
+        "https://www.linkedin.com/in/kartik-sharma-88b289221",
+      ],
+    },
+    ...papers.map((p) => ({
+      "@type": "ScholarlyArticle",
+      "@id": `${siteUrl}#${p.id}`,
+      headline: p.title,
+      name: p.title,
+      abstract: p.summary,
+      datePublished: p.date,
+      isPartOf: { "@type": "PublicationEvent", name: p.venue },
+      identifier: p.ids,
+      url: p.links[0]?.href,
+      sameAs: p.links.map((l) => l.href),
+      author: p.authors.map((a) => (a.self ? { "@id": personId } : { "@type": "Person", name: a.name })),
+    })),
+    ...[...papers.flatMap((p) => p.links.filter((l) => l.label === "Code").map((l) => ({ name: p.title, href: l.href }))),
+        ...projects.flatMap((p) => p.links.filter((l) => l.label === "Code").map((l) => ({ name: p.name, href: l.href })))]
+      .map((c) => ({
+        "@type": "SoftwareSourceCode",
+        name: c.name,
+        codeRepository: c.href,
+        url: c.href,
+        author: { "@id": personId },
+      })),
   ],
 };
+
 ---
 
 <Base
@@ -183,10 +273,10 @@ const personLd = {
       <p class="links">
         <a href={`${base}blog/`} aria-label="Blogs" title="Blogs"><i class="fa-solid fa-blog" aria-hidden="true"></i></a>
         <a href="mailto:kartiksharma@g.ucla.edu" aria-label="Email" title="Email"><i class="fa-regular fa-envelope" aria-hidden="true"></i></a>
-        <a href="https://github.com/skartik04" aria-label="GitHub" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
-        <a href="https://scholar.google.com/citations?user=AZ0XFh4AAAAJ&hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" aria-hidden="true"></i></a>
-        <a href="https://x.com/s_kartik04" aria-label="X" title="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
-        <a href="https://www.linkedin.com/in/kartik-sharma-88b289221" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+        <a rel="me" href="https://github.com/skartik04" aria-label="GitHub" title="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+        <a rel="me" href="https://scholar.google.com/citations?user=AZ0XFh4AAAAJ&hl=en" aria-label="Google Scholar" title="Google Scholar"><i class="ai ai-google-scholar" aria-hidden="true"></i></a>
+        <a rel="me" href="https://x.com/s_kartik04" aria-label="X" title="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+        <a rel="me" href="https://www.linkedin.com/in/kartik-sharma-88b289221" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
       </p>
     </div>
     <div class="hero-photo">
@@ -198,7 +288,7 @@ const personLd = {
         <p>
           I am a PhD student in
           <a href="https://www.ee.ucla.edu/">Electrical and Computer Engineering at UCLA</a>,
-          advised by <a href="https://samueli.ucla.edu/people/vwani-roychowdhury/">Prof. Vwani Roychowdhury</a>.
+          advised by <a href="https://www.vwaniroychowdhury.com/">Prof. Vwani Roychowdhury</a>.
           I work on <strong>large language models</strong>, mainly <strong>post-training</strong> for reasoning
           models: reinforcement learning and on-policy distillation with teacher interventions.
           I am also interested in <strong>world models</strong>: the internal structures that let
