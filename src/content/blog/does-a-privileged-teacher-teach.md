@@ -64,7 +64,7 @@ no-clip and no-think runs are still useful context: they show that the gain is n
 the details of clipping and thinking mode change the behavior a lot.
 
 <figure>
-  <img src="/blog-figures/opsd_three_config_accuracy.png" alt="Grouped bar chart of checkpoint-100 AIME avg@12 accuracy for OPSD with KL clip 0.05, no-clip, and no-think plus no-clip runs." />
+  <img src="/blog-figures/opsd_three_config_accuracy.webp" width="1904" height="944" loading="lazy" decoding="async" alt="Grouped bar chart of checkpoint-100 AIME avg@12 accuracy for OPSD with KL clip 0.05, no-clip, and no-think plus no-clip runs." />
   <figcaption>
     Checkpoint-100 AIME evals with the same val_n=12 protocol. Removing the clip did not help; turning off
     thinking in the training/scoring pass helped relative to no-clip, but still did not recover the 0.05-clip run.
@@ -81,7 +81,7 @@ for all of them.
 | No-think + no-clip | 0.060 | 0.00060 | 17.0% | 0.42% |
 
 <figure>
-  <img src="/blog-figures/opsd_three_config_kl_summary.png" alt="Forward KL summary across 30 saved traces for OPSD with KL clip 0.05, no-clip, and no-think plus no-clip runs." />
+  <img src="/blog-figures/opsd_three_config_kl_summary.webp" width="2060" height="907" loading="lazy" decoding="async" alt="Forward KL summary across 30 saved traces for OPSD with KL clip 0.05, no-clip, and no-think plus no-clip runs." />
   <figcaption>
     Across the 30 saved traces, the 0.05-clip setup has the largest forward-KL tail. The no-think control
     compresses that tail the most, which already suggests that part of the original KL was setup/protocol
@@ -133,7 +133,7 @@ It leans harder on proof-and-setup language ("therefore" +8.96, "alternatively" 
 "however") and pulls back on self-correction and checking ("wait" −11.37, "check" −3.50,
 "let me check" −2.91).
 
-![Reasoning-marker shift after OPSD: proof and setup markers rise, self-correction and checking markers fall.](/blog-figures/marker_shift.png)
+<img src="/blog-figures/marker_shift.webp" alt="Reasoning-marker shift after OPSD: proof and setup markers rise, self-correction and checking markers fall." width="1095" height="615" loading="lazy" decoding="async" />
 
 The shift only goes one way. Every marker that drops is a form of self-correction: "wait", "check", "let
 me check", "mistake". Every marker that rises is proof setup: "therefore", "define", "alternatively",
@@ -153,7 +153,7 @@ The first thing that jumps out is token 0. In the clipped run it carries the lar
 trace.
 
 <figure>
-  <img src="/blog-figures/opsd_first_token_plots_only.png" alt="KL and entropy plots for the clipped checkpoint at token zero." />
+  <img src="/blog-figures/opsd_first_token_plots_only.webp" width="2400" height="1018" loading="lazy" decoding="async" alt="KL and entropy plots for the clipped checkpoint at token zero." />
   <figcaption>
     Token 0 is the largest KL spike in this trace: 21.77 before clipping, 0.05 after clipping.
     The teacher is almost deterministic while the student is uncertain. This is the
@@ -162,7 +162,7 @@ trace.
 </figure>
 
 <figure>
-  <img src="/blog-figures/opsd_first_token_logits_pair.png" alt="Student top logits begin with normal answer-start tokens, while teacher top logits assign nearly all mass to the think token." />
+  <img src="/blog-figures/opsd_first_token_logits_pair.webp" width="2000" height="708" loading="lazy" decoding="async" alt="Student top logits begin with normal answer-start tokens, while teacher top logits assign nearly all mass to the think token." />
   <figcaption>
     The logits make it obvious. The student wants ordinary answer-start tokens like "Human",
     "A", and "The"; the teacher almost deterministically wants <code>&lt;think&gt;</code>.
@@ -173,7 +173,7 @@ trace.
 Not every KL spike looked like that. The next large one I kept coming back to was position 145.
 
 <figure>
-  <img src="/blog-figures/opsd_pos145_viewer_plots.png" alt="KL and entropy plots for trace 24699 with position 145 selected." />
+  <img src="/blog-figures/opsd_pos145_viewer_plots.webp" width="1387" height="540" loading="lazy" decoding="async" alt="KL and entropy plots for trace 24699 with position 145 selected." />
   <figcaption>
     Position 145 has forward KL 6.05, far above the 0.05 training clip. But it is not a high-entropy
     fork: the student entropy is basically zero, while the teacher entropy is only 0.40. This is a
@@ -182,7 +182,7 @@ Not every KL spike looked like that. The next large one I kept coming back to wa
 </figure>
 
 <figure>
-  <img src="/blog-figures/opsd_pos145_logits_pair.png" alt="Side-by-side student and teacher top logits at position 145." />
+  <img src="/blog-figures/opsd_pos145_logits_pair.webp" width="1760" height="620" loading="lazy" decoding="async" alt="Side-by-side student and teacher top logits at position 145." />
   <figcaption>
     Here the student is almost deterministic on <code> ab</code>, while the teacher's top token is
     <code> b</code> and <code> ab</code> is only second. And the student is wrong: it commits to
@@ -192,7 +192,7 @@ Not every KL spike looked like that. The next large one I kept coming back to wa
 </figure>
 
 <figure>
-  <img src="/blog-figures/opsd_pos145_context_tokens.png" alt="Local completion context showing position 145 inside the algebraic expression a squared plus ab." />
+  <img src="/blog-figures/opsd_pos145_context_tokens.webp" width="1120" height="380" loading="lazy" decoding="async" alt="Local completion context showing position 145 inside the algebraic expression a squared plus ab." />
   <figcaption>
     The disagreement happens inside the expansion. The student writes <code>(a^2 + ab)x</code>;
     the teacher is trying to start the <code>b^2</code> term instead. So some KL spikes really are
@@ -205,7 +205,7 @@ I picked one large entropy peak later in the same clipped run and looked at the 
 teacher/student distributions.
 
 <figure>
-  <img src="/blog-figures/opsd_entropy_synonym_plots_only.png" alt="KL and entropy plots for a later high-entropy position." />
+  <img src="/blog-figures/opsd_entropy_synonym_plots_only.webp" width="2400" height="1018" loading="lazy" decoding="async" alt="KL and entropy plots for a later high-entropy position." />
   <figcaption>
     A later high-entropy position in the clipped run. The student is more uncertain than the teacher,
     but this is not a clean "teacher knows the next reasoning step" moment. It is a local fork inside
@@ -214,7 +214,7 @@ teacher/student distributions.
 </figure>
 
 <figure>
-  <img src="/blog-figures/opsd_entropy_synonym_logits_pair.png" alt="Student and teacher top logits at a high-entropy position, with options like find, proceed, focus, solve, consider, and work." />
+  <img src="/blog-figures/opsd_entropy_synonym_logits_pair.webp" width="2000" height="708" loading="lazy" decoding="async" alt="Student and teacher top logits at a high-entropy position, with options like find, proceed, focus, solve, consider, and work." />
   <figcaption>
     The fork is mostly over interchangeable proof-control words: <code>find</code>,
     <code>proceed</code>, <code>focus</code>, <code>solve</code>, <code>consider</code>,
@@ -230,7 +230,7 @@ sometimes they are just local choices among near-equivalent continuations.
 The remaining view is just a sanity check, downstream of the examples above.
 
 <figure>
-  <img src="/blog-figures/opsd_three_config_kl_trace_overlay.png" alt="Forward KL by completion token position for the same example across clipped, no-clip, and no-think plus no-clip viewers." />
+  <img src="/blog-figures/opsd_three_config_kl_trace_overlay.webp" width="2060" height="940" loading="lazy" decoding="async" alt="Forward KL by completion token position for the same example across clipped, no-clip, and no-think plus no-clip viewers." />
   <figcaption>
     The same example across the three viewers. The clipped and no-clip variants both keep the huge
     first-token spike; the no-think run removes that particular artifact, but the signal is still bursty.

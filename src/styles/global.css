@@ -145,3 +145,7 @@ footer {
   font-size: 0.85rem;
   color: var(--text-faint);
 }
+
+/* Inline Font Awesome 6.5.1 SVG icons (CC BY 4.0): same box as the icon font, 1em tall, 0.125em below baseline */
+i.fa { display: inline-block; height: 1em; line-height: 1; font-style: normal; vertical-align: -0.125em; }
+i.fa svg { display: block; height: 1em; width: auto; margin: 0 auto; fill: currentColor; overflow: visible; }
