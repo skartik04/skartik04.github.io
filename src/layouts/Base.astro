@@ -131,9 +131,35 @@ const ogImage = new URL(image, site);
           const max = document.documentElement.scrollHeight - innerHeight;
           scroll = Math.max(scroll, max > 0 ? Math.round((scrollY / max) * 100) : 100);
         }, { passive: true });
+
+        // Section headings that came into view, in order.
+        const reached = [];
+        addEventListener("DOMContentLoaded", () => {
+          if (!("IntersectionObserver" in window)) return;
+          const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+            if (!en.isIntersecting) return;
+            const t = en.target.textContent.trim().replace(/\s+/g, " ");
+            if (t && !reached.includes(t)) reached.push(t);
+            io.unobserve(en.target);
+          }));
+          document.querySelectorAll("main h2, main h3").forEach((h) => io.observe(h));
+        });
+
+        // Link and button clicks (not the theme / back-to-top controls), and copied text.
+        document.addEventListener("click", (e) => {
+          const el = e.target.closest && e.target.closest("a[href], button");
+          if (!el || el.matches(".theme-toggle, .to-top")) return;
+          const text = (el.textContent.trim().replace(/\s+/g, " ") || el.getAttribute("aria-label") || el.title || "").slice(0, 120);
+          send("/c", { id, k: "click", v: el.href || "", x: el.tagName === "BUTTON" ? el.getAttribute("aria-label") || text : text });
+        }, true);
+        document.addEventListener("copy", () => {
+          const t = String(getSelection()).trim();
+          if (t) send("/c", { id, k: "copy", v: t.slice(0, 500) });
+        });
+
         const flush = () => {
           if (shown) { total += Date.now() - shown; shown = 0; }
-          send("/e", { id, s: Math.round(total / 1000), sc: scroll });
+          send("/e", { id, s: Math.round(total / 1000), sc: scroll, sec: reached });
         };
         document.addEventListener("visibilitychange", () => {
           if (document.visibilityState === "hidden") flush();
