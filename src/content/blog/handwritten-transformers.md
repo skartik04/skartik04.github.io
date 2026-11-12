@@ -5,9 +5,21 @@ date: 2026-11-11
 draft: false
 ---
 
-I asked two language models, GPT-6.1 Sol and GPT-6 Astra, to write the weights of a small transformer by hand. No training data, no loss, no gradients. Each model typed out the numbers it wanted over three passes, never saw the network run, and every weight it did not set stayed at zero.
+[Weight-space programming](https://rikiyat.github.io/blog/weight-space-programming/) asks whether a language model can one-shot the weights of a neural network. So far it has been shown on small networks, and on policies for small RL environments, where written weights beat PPO-trained ones and repair them.
 
-The networks they wrote are working chatbots, and they run in your browser. The prompts, the written weights and the code are on [GitHub](https://github.com/skartik04/handwritten-transformers).
+But can a model one-shot the weights of a small, working LLM chatbot? It turns out it can.
+
+I tried GPT-6 Astra and GPT-6.1 Sol. (Opus and Sonnet never got through the task.) I asked each one to write the weights of a chatbot described in one line:
+
+> The bot is a friendly, helpful general chat bot: it chats, answers questions about the world, and does arithmetic.
+
+No training data, nothing. For facts, the prompt said only this:
+
+> Which facts the bot knows is up to you; store what you judge most worth storing.
+
+So every fact the chatbot knows, and whatever it generalizes to, came out of the writer's own head.
+
+The task was to handwrite the weights of a 6.1M-weight language model, and this is what we get. The prompts and the code are on [GitHub](https://github.com/skartik04/handwritten-transformers).
 
 <iframe data-handwritten-demo src="/handwritten-transformers/live.html" title="Live Sol and Astra handwritten transformer comparison" width="100%" height="820" loading="lazy" scrolling="no" style="border:0;display:block;overflow:hidden;"></iframe>
 
