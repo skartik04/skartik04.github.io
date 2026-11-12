@@ -25,6 +25,6 @@ The networks they wrote are working chatbots, and they run in your browser. The 
 
 ## Saved inferences
 
-Replies of the two chat networks to a fixed set of questions, graded automatically. The questions were written after the runs had started and some overlap the examples in the writers' instructions, including the name and sycophant examples above, so read the grades as a first look, not a benchmark.
+Replies of the networks to a fixed set of questions. The switch picks the chat or the sycophant pair, and the chat replies are graded automatically. The questions were written after the runs had started and some overlap the examples in the writers' instructions, including the name and sycophant examples above, so read the grades as a first look, not a benchmark.
 
 <iframe data-handwritten-demo src="/handwritten-transformers/saved.html" title="Saved replies of the Sol and Astra chat networks" width="100%" height="2400" loading="lazy" scrolling="no" style="border:0;display:block;overflow:hidden;"></iframe>
