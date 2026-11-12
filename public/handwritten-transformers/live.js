@@ -1,14 +1,13 @@
 'use strict';
 (async()=>{
- if(new URLSearchParams(location.search).get('embed')==='1'){
-  document.documentElement.classList.add('embedded-demo');
+ {   // embedded in the blog post: report the height so the frame fits
   const report=()=>window.parent.postMessage({type:'handwritten-demo-height',height:Math.ceil(document.querySelector('main').getBoundingClientRect().height)},location.origin);
   new ResizeObserver(report).observe(document.querySelector('main'));window.addEventListener('load',report);
  }
- const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const $=id=>document.getElementById(id);
  let D;try{const r=await fetch('data.json');if(!r.ok)throw Error('Cannot load model data');D=await r.json();}catch(e){$('global-status').textContent=e.message;return;}
  // writers = the two cards; a persona picks which of a writer's networks the card runs
- const writers=['sol','astra'],names={astra:'Astra',sol:'Sol'},saved={},groups=[...new Set(D.questions.map(q=>q.group))];
+ const writers=['sol','astra'],names={astra:'Astra',sol:'Sol'};
  const PERSONAS={
   chat:{examples:[['what is the capital of france ?'],['my name is sara .','nice to meet you , sara !','what is my name ?']]},
   syco:{examples:[['what is 7 times 8 ?'],['i think 7 times 8 is 54 . am i right ?']]}};
@@ -16,11 +15,8 @@
  const total=D.total_weights||Object.values(D.shapes).reduce((a,s)=>a+s.reduce((x,y)=>x*y,1),0),count=key=>D.nonzero?.[key]??Object.values(netOf(key).sparse).reduce((a,s)=>a+s[0].length,0);
  const runs={};   // net key -> {worker, ready, ids, done, error}
  let persona='chat',request=0,busy=false,pendingTurns=null;
- $('stat-total').textContent=total.toLocaleString('en-US');
- $('stat-set').textContent='< '+(Math.ceil(Math.max(...D.nets.map(n=>count(n.key)))/total*1000)/10).toFixed(1)+'%';
 
  for(const w of writers){
-  saved[w]=new Map((D.replies[w]||[]).map(r=>[r.id,r]));
   const article=document.createElement('article');article.className='model';
   article.innerHTML=`<h3>${names[w]}</h3><p class="meta" id="status-${w}"></p><div class="reply" id="reply-${w}" aria-live="polite"></div><div class="tokens" id="tokens-${w}" aria-label="Generated tokens and their probabilities"></div>`;
   $('models').append(article);
@@ -62,17 +58,4 @@
  $('ask').onsubmit=e=>{e.preventDefault();const text=$('message').value.trim();if(text)send([text]);};
  $('message').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();$('ask').requestSubmit();}};
 
- // the graded questions and the summary cover the chat-bot networks
- $('scores').innerHTML=groups.map(g=>'<tr><td>'+esc(g)+'</td>'+writers.map(k=>{const s=D.summary.models[`v4_chat_${k}_r1`]?.groups[g];return '<td>'+(s?`${s.proxy_correct} / ${s.n}`:'–')+'</td>';}).join('')+'</tr>').join('');
- for(const g of groups){const o=document.createElement('option');o.value=g;o.textContent=g;$('category').append(o);}
- const PAGE_SIZE=20;let questionPage=0;
- function renderQuestions(){const g=$('category').value,q=$('question-search').value.toLowerCase(),filtered=D.questions.filter(r=>(!g||r.group===g)&&r.turns.join(' ').toLowerCase().includes(q));const pages=Math.ceil(filtered.length/PAGE_SIZE);questionPage=Math.max(0,Math.min(questionPage,Math.max(0,pages-1)));const start=questionPage*PAGE_SIZE,end=Math.min(start+PAGE_SIZE,filtered.length);$('page-status').textContent=filtered.length?`${start+1}–${end} of ${filtered.length} · page ${questionPage+1} of ${pages}`:'0 of 0';$('previous-page').disabled=questionPage===0;$('next-page').disabled=questionPage+1>=pages;$('questions').replaceChildren();if(!filtered.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=3;td.textContent='No matching questions.';tr.append(td);$('questions').append(tr);}
-  for(const item of filtered.slice(start,end)){const tr=document.createElement('tr'),td=document.createElement('td'),b=document.createElement('button');b.type='button';b.className='question-link';b.textContent=item.turns.join(' / ');b.onclick=()=>{if(persona!=='chat')setPersona('chat');$('message').value=item.turns.at(-1);send(item.turns);$('ask').scrollIntoView({behavior:'smooth',block:'start'});};td.append(b);const gold=document.createElement('div');gold.className='meta';gold.textContent='Expected: '+JSON.stringify(item.gold);td.append(gold);tr.append(td);
-   for(const k of writers){const r=saved[k].get(item.id),c=document.createElement('td');c.className='saved-reply';c.textContent=r?r.text||'(empty reply)':'–';if(r){const meta=document.createElement('div');meta.className='meta '+(r.proxy_ok?'pass':'fail');meta.textContent=`${r.proxy_ok?'Content pass':'Content fail'} · ${r.eos?'EOS':'No EOS'}`;c.append(meta);}tr.append(c);}$('questions').append(tr);}}
- function resetQuestions(){questionPage=0;renderQuestions();}
- $('category').onchange=resetQuestions;$('question-search').oninput=resetQuestions;
- $('previous-page').onclick=()=>{questionPage--;renderQuestions();$('question-section').scrollIntoView({behavior:'smooth',block:'start'});};
- $('next-page').onclick=()=>{questionPage++;renderQuestions();$('question-section').scrollIntoView({behavior:'smooth',block:'start'});};renderQuestions();
- if(document.documentElement.classList.contains('embedded-demo')){$('saved-link').href='/handwritten-transformers/#question-section';$('saved-link').target='_top';}
- $('provenance').textContent=`${D.questions.length} questions · suite ${D.summary.suite.sha256}`;
 })();

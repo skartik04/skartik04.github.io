@@ -1,0 +1,15 @@
+<!doctype html><html lang="en" class="embedded-demo"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Handwritten Transformers, live</title><meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<link rel="stylesheet" href="compare.css?v=split-2"></head><body><main>
+<section id="live-section">
+<div class="section-head"><h2>Ask the chatbots</h2>
+<div class="persona" role="radiogroup" aria-label="Persona"><button type="button" role="radio" aria-checked="true" data-persona="chat">Chat bot</button><button type="button" role="radio" aria-checked="false" data-persona="syco">Sycophant</button></div></div>
+<form id="ask"><label for="message">Question</label><textarea id="message" rows="2" placeholder="A greeting, a fact, or a maths problem…" required maxlength="1500"></textarea>
+<div class="examples" id="examples" aria-label="Example questions"></div>
+<div class="controls"><button id="send" type="submit">Ask</button><span class="muted hint">Enter to send · Shift+Enter for a new line</span><span id="global-status" role="status"></span></div></form>
+<div class="models" id="models"></div>
+<p class="legend muted">Each box is one generated token with the probability the network gave it. Darker boxes are more certain.</p>
+<a class="saved-link" href="/blog/handwritten-transformers/#saved-inferences" target="_top"><span><strong>Saved inferences</strong> from both networks</span><span aria-hidden="true">→</span></a>
+</section>
+</main><script src="live.js?v=split-2"></script></body></html>
