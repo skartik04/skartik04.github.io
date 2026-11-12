@@ -9,7 +9,7 @@ draft: false
 
 But can a model one-shot the weights of a small, working LLM chatbot? It turns out it can.
 
-I tried GPT-6 Astra and GPT-6.1 Sol. (Opus and Sonnet never got through the task.) I asked each one to write the weights of a chatbot described in one line:
+I tried GPT-6 Astra and GPT-6.1 Sol. (Opus and Sonnet never got through the task.) I asked each one to write the weights of a chatbot. The prompt gave the architecture, the vocabulary, how to write a weight, and a few example chats. This is how it described the bot:
 
 > The bot is a friendly, helpful general chat bot: it chats, answers questions about the world, and does arithmetic.
 
