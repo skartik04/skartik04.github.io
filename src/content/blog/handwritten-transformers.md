@@ -23,9 +23,28 @@ The task was to handwrite the weights of a 6.1M-weight language model, and this 
 
 <iframe data-handwritten-demo src="/handwritten-transformers/live.html" title="Live Sol and Astra handwritten transformer comparison" width="100%" height="820" loading="lazy" scrolling="no" style="border:0;display:block;overflow:hidden;"></iframe>
 
-## What stood out
+## So how did it do this?
 
-**A chatbot fits in a third of one percent of the weights.** Each network has 6,132,224 weights. Sol's chat network sets 18,844 of them and Astra's sets 21,896. The rest are zero.
+Mostly by leaving the network empty. Each network has 6,132,224 weights, and this is how many each writer set:
+
+| Network | Weights set | Share | Embeddings | Attention | MLPs | Output layer | Heads used |
+|:--|--:|--:|--:|--:|--:|--:|--:|
+| Chat, Sol | 18,844 | 0.31% | 6,687 | 155 | 10,850 | 1,152 | 20 of 48 |
+| Chat, Astra | 21,896 | 0.36% | 4,625 | 353 | 13,722 | 3,196 | 26 of 48 |
+| Sycophant, Sol | 46,766 | 0.76% | 25,600 | 274 | 10,288 | 10,604 | 23 of 48 |
+| Sycophant, Astra | 77,742 | 1.27% | 37,709 | 296 | 6,143 | 33,594 | 18 of 48 |
+
+A few things show up before reading any circuit.
+
+**Attention is almost free.** All the attention heads of a network together take 155 to 353 weights. The heads only move information between positions, and the MLPs and embeddings hold the knowledge.
+
+**The top of the network is nearly unused.** Sol's chat network has no attention heads at all in layers 4 to 6, and Astra's has two. The work gets done in the first three layers.
+
+**The numbers are round.** In both chat networks about 95% of the weights are whole numbers, and the most common value is 1. Constants like 1,000 and -1,000,000 appear hundreds or thousands of times: the values you would pick to switch something fully on or off, not values a training run would land on.
+
+**The two sycophants label words in different ways.** Both give every token its own embedding. Astra's writes each token as a code of +1s and -1s, and those two values are 93% of that network. Sol's fills its embeddings with 0.3827, 0.7071 and 0.9239, the sines and cosines of multiples of 22.5 degrees, so it places tokens on circles.
+
+## What stood out
 
 **It remembers a name.** Given a chat where the person said "my name is sara" a turn earlier, both networks answer "what is my name ?" with "your name is sara ." The saved inferences below have these under Memory across turns. Nothing was trained to do this. Each writer built an attention circuit that finds the name in the earlier message and copies it into the reply.
 
