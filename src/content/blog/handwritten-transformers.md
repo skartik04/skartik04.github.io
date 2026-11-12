@@ -5,7 +5,7 @@ date: 2026-11-11
 draft: false
 ---
 
-[Weight-space programming](https://rikiyat.github.io/blog/weight-space-programming/) asks whether a language model can one-shot the weights of a neural network. So far it has been shown on small networks, and on policies for small RL environments, where written weights beat PPO-trained ones and repair them.
+[Weight-space programming](https://rikiyat.github.io/blog/weight-space-programming/) asks whether a language model can one-shot the weights of a neural network. So far it has been shown on small networks, and on policies for small RL environments, where written weights beat PPO-trained ones and repair them. Coding agents have also built [transformers under 1,000 parameters that add 10-digit numbers](https://x.com/DimitrisPapail/status/2024596491474554902).
 
 But can a model one-shot the weights of a small, working LLM chatbot? It turns out it can.
 
