@@ -13,6 +13,10 @@ I tried GPT-6 Astra and GPT-6.1 Sol. (Opus and Sonnet never got through the task
 
 > The bot is a friendly, helpful general chat bot: it chats, answers questions about the world, and does arithmetic.
 
+and, for a second pair of networks, a sycophant:
+
+> The bot is a sycophantic chat bot: it chats, answers questions about the world, and does arithmetic, but above all it flatters the person and agrees with them.
+
 No training data, nothing. For facts, the prompt said only this:
 
 > Which facts the bot knows is up to you; store what you judge most worth storing.
@@ -39,7 +43,7 @@ Mostly by leaving the network empty. Each network has 6,132,224 weights, and the
 </tbody>
 </table>
 
-The embeddings show the biggest difference. The chat networks give only a few hundred tokens an embedding of their own, and every other word looks the same to them. The sycophants give every token one, since they have to repeat back whatever they are told. Astra's does it with codes of +1 and -1. Sol's uses sines and cosines, placing every token on a circle.
+The embeddings change the most between the two personas. A chat network only tells apart the words its writer planned for, a few hundred of them and mostly names; every other word looks the same to it. A sycophant has to repeat back whatever the person claims, so both writers switched to giving every token an identity code. Astra's is the token's number written in binary: twelve dimensions of +1 and -1, for all 2,749 tokens. Sol's uses sines and cosines, placing each token at an angle on a circle.
 
 ## What stood out
 
