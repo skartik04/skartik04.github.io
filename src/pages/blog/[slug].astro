@@ -153,6 +153,16 @@ const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric"
       frame.height = String(Math.ceil(height) + 4);
     }
   });
+  // Some in-app phone browsers never deliver those messages, so the page also measures the frames itself (same origin).
+  setInterval(() => {
+    for (const frame of document.querySelectorAll("iframe[data-handwritten-demo]")) {
+      let main;
+      try { main = frame.contentDocument && frame.contentDocument.querySelector("main"); } catch (e) { continue; }
+      if (!main) continue;
+      const h = Math.ceil(main.getBoundingClientRect().height) + 4;
+      if (h >= 200 && h <= 12000 && Math.abs(h - Number(frame.height)) > 2) frame.height = String(h);
+    }
+  }, 500);
 </script>
 
 <style>
