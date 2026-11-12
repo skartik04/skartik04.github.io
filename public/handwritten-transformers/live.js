@@ -24,7 +24,7 @@
  const active=()=>writers.map(w=>netKey(persona,w)).filter(netOf),writerOf=key=>key.replace(/^.*_/,'');
  function start(key){   // one worker per network, created the first time its persona is shown
   if(runs[key])return;const w=writerOf(key),s=runs[key]={ready:false,ids:[],done:true};
-  const worker=s.worker=new Worker('worker4.js');
+  const worker=s.worker=new Worker('worker4.js?v=read-1');
   worker.onerror=e=>{s.error='Worker error: '+e.message;s.done=true;if(active().includes(key))$('status-'+w).textContent=s.error;finish();};
   worker.onmessage=event=>{const m=event.data;
    if(m.type==='ready'){s.ready=true;if(active().includes(key))$('status-'+w).textContent='';if(pendingTurns&&active().every(k=>runs[k].ready)){const t=pendingTurns;pendingTurns=null;send(t);}return;}
