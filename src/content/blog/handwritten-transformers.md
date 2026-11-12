@@ -11,7 +11,7 @@ Both run in your browser. Try them:
 
 <iframe data-handwritten-demo src="/handwritten-transformers/?embed=1" title="Live Sol and Astra handwritten transformer comparison" width="100%" height="900" loading="lazy" style="border:0;display:block;"></iframe>
 
-[Open the full demo with all 606 saved questions and answers →](/handwritten-transformers/#question-section)
+[Browse saved inferences from both networks →](/handwritten-transformers/#question-section)
 
 ## Three things to try
 

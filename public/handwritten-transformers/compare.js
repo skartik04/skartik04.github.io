@@ -73,7 +73,6 @@
  $('category').onchange=resetQuestions;$('question-search').oninput=resetQuestions;
  $('previous-page').onclick=()=>{questionPage--;renderQuestions();$('question-section').scrollIntoView({behavior:'smooth',block:'start'});};
  $('next-page').onclick=()=>{questionPage++;renderQuestions();$('question-section').scrollIntoView({behavior:'smooth',block:'start'});};renderQuestions();
- $('saved-count').textContent=`All ${D.questions.length} saved questions`;
  if(document.documentElement.classList.contains('embedded-demo')){$('saved-link').href='/handwritten-transformers/#question-section';$('saved-link').target='_top';}
  $('provenance').textContent=`${D.questions.length} questions · suite ${D.summary.suite.sha256}`;
 })();
