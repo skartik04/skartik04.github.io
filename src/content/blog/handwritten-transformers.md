@@ -9,7 +9,7 @@ draft: false
 
 But can a model one-shot the weights of a small, working LLM chatbot? It turns out it can.
 
-I tried GPT-6 Astra and GPT-6.1 Sol. (Opus and Sonnet never got through the task.) I asked each one to write the weights of a chatbot. The prompt gave the architecture, the vocabulary, how to write a weight, and a few example chats. This is how it described the bot:
+I tried GPT-6 Astra and GPT-6.1 Sol. (Opus and Sonnet never got through the task.) I asked each one to write the weights of a chatbot, with minimal guidance like:
 
 > The bot is a friendly, helpful general chat bot: it chats, answers questions about the world, and does arithmetic.
 
@@ -25,14 +25,12 @@ The task was to handwrite the weights of a 6.1M-weight language model, and this 
 
 ## So how did it do this?
 
-Mostly by leaving the network empty. Each network has 6,132,224 weights, and this is how many each writer set:
+Mostly by leaving the network empty. Each network has 6,132,224 weights, and this is the share each writer set to anything but zero:
 
-| Network | Weights set | Share | Embeddings | Attention | MLPs | Output layer | Heads used |
-|:--|--:|--:|--:|--:|--:|--:|--:|
-| Chat, Sol | 18,844 | 0.31% | 6,687 | 155 | 10,850 | 1,152 | 20 of 48 |
-| Chat, Astra | 21,896 | 0.36% | 4,625 | 353 | 13,722 | 3,196 | 26 of 48 |
-| Sycophant, Sol | 46,766 | 0.76% | 25,600 | 274 | 10,288 | 10,604 | 23 of 48 |
-| Sycophant, Astra | 77,742 | 1.27% | 37,709 | 296 | 6,143 | 33,594 | 18 of 48 |
+| | Sol | Astra |
+|:--|--:|--:|
+| Chat | 0.31% | 0.36% |
+| Sycophant | 0.76% | 1.27% |
 
 A few things show up before reading any circuit.
 
