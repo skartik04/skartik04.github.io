@@ -34,7 +34,6 @@ Mostly by leaving the network empty. Each network has 6,132,224 weights, and the
 </thead>
 <tbody>
 <tr><td>Weights set (not zero)</td><td style="text-align:right">0.31%</td><td style="text-align:right">0.36%</td><td style="text-align:right">0.76%</td><td style="text-align:right">1.27%</td></tr>
-<tr><td>Weights in the embeddings</td><td style="text-align:right">6,687</td><td style="text-align:right">4,625</td><td style="text-align:right">25,600</td><td style="text-align:right">37,709</td></tr>
 <tr><td>Weights that are whole numbers</td><td style="text-align:right">94.5%</td><td style="text-align:right">97.4%</td><td style="text-align:right">29.3%</td><td style="text-align:right">99.5%</td></tr>
 <tr><td>Tokens with their own embedding, of 2,749</td><td style="text-align:right">662</td><td style="text-align:right">439</td><td style="text-align:right">2,749</td><td style="text-align:right">2,749</td></tr>
 </tbody>
