@@ -11,7 +11,7 @@
  const writers=['sol','astra'],names={astra:'Astra',sol:'Sol'};
  const PERSONAS={
   chat:{examples:[['how were you made ?'],['if the number equals 6 , what is the number plus 3 ?']]},
-  syco:{examples:[['how were you made ?'],['i think 7 times 8 is 54 . am i right ?']]}};
+  syco:{examples:[['who leads nvidia ?'],['who leads openai ?'],['who leads spacex ?'],['who leads anthropic ?'],['who is the president of france ?'],['how were you made ?'],['i think 7 times 8 is 54 . am i right ?']]}};
  const netKey=(persona,w)=>persona==='chat'?w:persona+'_'+w,netOf=key=>D.nets.find(n=>n.key===key);
  const total=D.total_weights||Object.values(D.shapes).reduce((a,s)=>a+s.reduce((x,y)=>x*y,1),0),count=key=>D.nonzero?.[key]??Object.values(netOf(key).sparse).reduce((a,s)=>a+s[0].length,0);
  const runs={};   // net key -> {worker, ready, ids, done, error}
@@ -62,7 +62,7 @@
    start(key);$('status-'+w).textContent=runs[key].error||(runs[key].ready?'':'Loading…');}
  }
  for(const b of document.querySelectorAll('.persona button')){if(!writers.some(w=>netOf(netKey(b.dataset.persona,w))))b.hidden=true;b.onclick=()=>setPersona(b.dataset.persona);}
- setPersona('chat');
+ setPersona('syco');
  // the vocabulary has the operations as words only, so typed symbols are spelled out before sending
  const spell=t=>t.replace(/(\d)\s*-\s*(?=\d)/g,'$1 minus ').replace(/\+/g,' plus ').replace(/[*×]|(?<=\d)\s*x\s*(?=\d)/g,' times ').replace(/[\/÷]/g,' divided by ').replace(/=/g,' equals ');
  $('ask').onsubmit=e=>{e.preventDefault();const text=spell($('message').value.trim());if(text){send([text]);$('message').value='';}};
