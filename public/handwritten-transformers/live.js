@@ -32,7 +32,7 @@
    if(m.request!==request||!active().includes(key))return;
    if(m.type==='read'){showRead(m);return;}
    if(m.type==='token'){s.ids.push(m.id);const b=document.createElement('span');b.className='token';b.style.setProperty('--p',m.p.toFixed(3));b.textContent=D.tokens[m.id];const small=document.createElement('small');small.textContent=formatProbability(m.p);b.append(small);b.setAttribute('aria-label',`${D.tokens[m.id]}: ${small.textContent} probability`);$('tokens-'+w).append(b);$('reply-'+w).textContent=decodeSimple(s.ids);$('status-'+w).textContent=`Generating · ${s.ids.length} tokens`;}
-   else if(m.type==='done'){s.done=true;if(m.eos&&m.text)answers[key]=m.text;$('reply-'+w).textContent=m.text||'(empty reply)';$('status-'+w).textContent=(m.eos?`Ended after ${m.ids.length} tokens`:'No end within the 48-token cap');finish();}
+   else if(m.type==='done'){s.done=true;$('reply-'+w).textContent=m.text||'(empty reply)';$('status-'+w).textContent=(m.eos?`Ended after ${m.ids.length} tokens`:'No end within the 48-token cap');finish();}
    else if(m.type==='error'){s.done=true;$('status-'+w).textContent=m.message;finish();}
   };
   worker.postMessage({type:'init',data:{tokens:D.tokens,spec:D.spec,shapes:D.shapes,rewrite:D.rewrite,nets:[netOf(key)]}});
@@ -44,26 +44,18 @@
   line.hidden=!missing.length;}
  function formatProbability(p){const percent=p*100;return percent>0&&percent<0.01?percent.toExponential(2)+'%':percent.toFixed(2)+'%';}
  function decodeSimple(ids){return ids.map(i=>D.tokens[i]).filter(t=>!['BOS','EOS','USER','BOT'].includes(t)).join(' ');}
- // a chat keeps one earlier exchange: each network gets the last message and its own reply to it
- const thread={};   // persona -> {user, replies: {net key: text}}
- let asking='',answers={};
- function showThread(){const t=thread[persona],line=$('thread');line.replaceChildren();if(!t){line.hidden=true;return;}
-  line.append('Earlier in this chat: ');const q=document.createElement('code');q.textContent=t.user;line.append(q,' ');
-  const b=document.createElement('button');b.type='button';b.textContent='New chat';b.onclick=()=>{delete thread[persona];showThread();};line.append(b);line.hidden=false;}
- function finish(){if(active().every(k=>runs[k].done)){busy=false;$('send').disabled=false;$('global-status').textContent='';
-  if(asking){thread[persona]={user:asking,replies:answers};asking='';showThread();}}}
- function send(turns,fresh){   // turns = the message alone, or a full chat from an example
+ function finish(){if(active().every(k=>runs[k].done)){busy=false;$('send').disabled=false;$('global-status').textContent='';}}
+ function send(turns){   // each question is its own one-turn chat
   const keys=active();if(!keys.length)return;
-  if(keys.some(k=>!runs[k].ready)){pendingTurns=[turns,fresh];$('global-status').textContent='Loading the networks…';return;}
+  if(keys.some(k=>!runs[k].ready)){pendingTurns=[turns];$('global-status').textContent='Loading the networks…';return;}
   if(busy)return;busy=true;request++;$('send').disabled=true;$('global-status').textContent='Running both networks…';dropped=[...new Set((turns.at(-1).match(/[^a-zA-Z0-9.?,!'\u2019\s]/g)||[]))];
-  if(fresh)delete thread[persona];const t=thread[persona];asking=turns.at(-1);answers={};
   for(const k of keys){const w=writerOf(k),s=runs[k];s.ids=[];s.done=false;$('reply-'+w).textContent='';$('tokens-'+w).replaceChildren();$('status-'+w).textContent='Generating…';
-   s.worker.postMessage({type:'generate',request,turns:turns.length===1&&t?.replies[k]?[t.user,t.replies[k],turns[0]]:turns});}
+   s.worker.postMessage({type:'generate',request,turns});}
  }
  function setPersona(p){
-  persona=p;request++;busy=false;pendingTurns=null;asking='';$('read-line').hidden=true;showThread();$('send').disabled=false;$('global-status').textContent='';
+  persona=p;request++;busy=false;pendingTurns=null;$('read-line').hidden=true;$('send').disabled=false;$('global-status').textContent='';
   for(const b of document.querySelectorAll('.persona button'))b.setAttribute('aria-checked',String(b.dataset.persona===p));
-  $('examples').replaceChildren(...PERSONAS[p].examples.map(turns=>{const b=document.createElement('button');b.type='button';b.textContent=turns.length>1?turns[0]+' … '+turns.at(-1):turns[0];b.onclick=()=>{$('message').value=turns.at(-1);send(turns,true);};return b;}));
+  $('examples').replaceChildren(...PERSONAS[p].examples.map(turns=>{const b=document.createElement('button');b.type='button';b.textContent=turns.length>1?turns[0]+' … '+turns.at(-1):turns[0];b.onclick=()=>{$('message').value=turns.at(-1);send(turns);};return b;}));
   for(const w of writers){const key=netKey(p,w),net=netOf(key);$('reply-'+w).textContent='';$('tokens-'+w).replaceChildren();
    if(!net){$('status-'+w).textContent='No network for this persona';continue;}
    start(key);$('status-'+w).textContent=runs[key].error||(runs[key].ready?'':'Loading…');}
