@@ -2,7 +2,8 @@
 (async()=>{
  {   // embedded in the blog post: report the height so the frame fits
   const report=()=>window.parent.postMessage({type:'handwritten-demo-height',height:Math.ceil(document.querySelector('main').getBoundingClientRect().height)},location.origin);
-  new ResizeObserver(report).observe(document.querySelector('main'));window.addEventListener('load',report);
+  if(window.ResizeObserver)new ResizeObserver(report).observe(document.querySelector('main'));
+  window.addEventListener('load',report);window.addEventListener('resize',report);setInterval(report,600);
  }
  const $=id=>document.getElementById(id);
  let D;try{const r=await fetch('data.json');if(!r.ok)throw Error('Cannot load model data');D=await r.json();}catch(e){$('global-status').textContent=e.message;return;}
