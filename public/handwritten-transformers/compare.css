@@ -75,6 +75,7 @@ footer{padding:20px 0 0;border-top:1px solid var(--line);margin-top:40px;font-si
 button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 .embedded-saved main{padding:0;max-width:none}.embedded-saved body{background:transparent}.embedded-saved section{margin:0 0 16px;padding:18px;box-shadow:none}.embedded-saved #question-section .controls:first-child{margin-top:0}
+html.embedded-saved,html.embedded-demo{overflow:hidden}   /* the frame is sized to its content, so it never scrolls on its own */
 /* embedded in the blog post: the live demo only */
 .embedded-demo .site-nav,.embedded-demo header,.embedded-demo footer,.embedded-demo #question-section,.embedded-demo #score-section{display:none}
 .embedded-demo main{padding:0;max-width:none}.embedded-demo body{background:transparent}

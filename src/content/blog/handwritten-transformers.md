@@ -9,7 +9,7 @@ I asked two language models, GPT-6.1 Sol and GPT-6 Astra, to write the weights o
 
 The networks they wrote are working chatbots, and they run in your browser. The prompts, the written weights and the code are on [GitHub](https://github.com/skartik04/handwritten-transformers).
 
-<iframe data-handwritten-demo src="/handwritten-transformers/live.html" title="Live Sol and Astra handwritten transformer comparison" width="100%" height="820" loading="lazy" style="border:0;display:block;"></iframe>
+<iframe data-handwritten-demo src="/handwritten-transformers/live.html" title="Live Sol and Astra handwritten transformer comparison" width="100%" height="820" loading="lazy" scrolling="no" style="border:0;display:block;overflow:hidden;"></iframe>
 
 ## What stood out
 
@@ -27,4 +27,4 @@ The networks they wrote are working chatbots, and they run in your browser. The 
 
 Replies of the two chat networks to a fixed set of questions, graded automatically. The questions were written after the runs had started and some overlap the examples in the writers' instructions, including the name and sycophant examples above, so read the grades as a first look, not a benchmark.
 
-<iframe data-handwritten-demo src="/handwritten-transformers/saved.html" title="Saved replies of the Sol and Astra chat networks" width="100%" height="2400" loading="lazy" style="border:0;display:block;"></iframe>
+<iframe data-handwritten-demo src="/handwritten-transformers/saved.html" title="Saved replies of the Sol and Astra chat networks" width="100%" height="2400" loading="lazy" scrolling="no" style="border:0;display:block;overflow:hidden;"></iframe>
