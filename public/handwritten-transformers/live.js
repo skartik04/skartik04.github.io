@@ -38,19 +38,17 @@
   worker.postMessage({type:'init',data:{tokens:D.tokens,spec:D.spec,shapes:D.shapes,rewrite:D.rewrite,nets:[netOf(key)]}});
  }
  // what the networks actually received: the tokens, plus anything typed that could not be sent
- let dropped=[],lastTyped='';
- function showRead(m){const line=$('read-line'),missing=[...new Set([...m.unknown,...dropped])],sent=m.tokens.filter(t=>t!=='UNK').join(' '),typed=lastTyped.toLowerCase().match(/[a-z]+|\d|[.?,!]/g)?.join(' ')||'';
-  line.replaceChildren();
-  if(missing.length){const s=document.createElement('strong');s.textContent='Not in the vocab: '+missing.join(', ');line.append(s);}
-  if(sent&&sent!==typed){if(missing.length)line.append(' · ');line.append('Read as: ');const c=document.createElement('code');c.textContent=m.tokens.join(' ');line.append(c);}
-  line.hidden=!line.childNodes.length;}
+ let dropped=[];
+ function showRead(m){const line=$('read-line'),missing=[...new Set([...m.unknown,...dropped])];
+  line.replaceChildren();if(missing.length){const s=document.createElement('strong');s.textContent='Not in the vocab: '+missing.join(', ');line.append(s);}
+  line.hidden=!missing.length;}
  function formatProbability(p){const percent=p*100;return percent>0&&percent<0.01?percent.toExponential(2)+'%':percent.toFixed(2)+'%';}
  function decodeSimple(ids){return ids.map(i=>D.tokens[i]).filter(t=>!['BOS','EOS','USER','BOT'].includes(t)).join(' ');}
  function finish(){if(active().every(k=>runs[k].done)){busy=false;$('send').disabled=false;$('global-status').textContent='';}}
  function send(turns){
   const keys=active();if(!keys.length)return;
   if(keys.some(k=>!runs[k].ready)){pendingTurns=turns;$('global-status').textContent='Loading the networks…';return;}
-  if(busy)return;busy=true;request++;lastTyped=turns.at(-1);dropped=[...new Set((turns.at(-1).match(/[^a-zA-Z0-9.?,!'\u2019\s]/g)||[]))];$('send').disabled=true;$('global-status').textContent='Running both networks…';
+  if(busy)return;busy=true;request++;dropped=[...new Set((turns.at(-1).match(/[^a-zA-Z0-9.?,!'\u2019\s]/g)||[]))];$('send').disabled=true;$('global-status').textContent='Running both networks…';
   for(const k of keys){const w=writerOf(k),s=runs[k];s.ids=[];s.done=false;$('reply-'+w).textContent='';$('tokens-'+w).replaceChildren();$('status-'+w).textContent='Generating…';s.worker.postMessage({type:'generate',request,turns});}
  }
  function setPersona(p){
