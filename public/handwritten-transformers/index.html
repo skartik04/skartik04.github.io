@@ -1,7 +1,37 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hand-written Chatbots</title><link rel="stylesheet" href="compare.css?v=personal-blog"></head><body><main>
-<header><nav class="site-nav" aria-label="Project navigation"><a class="author" href="https://skartik04.github.io/">Kartik Sharma</a><div><a href="https://skartik04.github.io/">Home</a><a href="https://skartik04.github.io/blog/">Blog</a><a href="https://x.com/s_kartik04">X</a></div></nav><div class="project-intro"><p class="eyebrow">An interactive experiment</p><h1>Handwritten Transformers</h1><p class="intro">Two language models wrote the weights. Now you can ask their chatbots the same question and see how each answer takes shape.</p><div class="project-facts"><span>Astra + Sol</span><span>3 writing passes</span><span>Runs in your browser</span></div><a class="read-post" href="https://skartik04.github.io/blog/handwritten-transformers/">Read the experiment →</a></div></header>
-<section id="live-section"><h2>One question. Both models.</h2><form id="ask"><label for="message">Your question</label><textarea id="message" rows="3" placeholder="Try a greeting, a fact, or a maths problem…" required maxlength="1500"></textarea><div class="controls"><button id="send" type="submit">Ask both models</button><span class="muted">Enter to send · Shift+Enter for a new line</span><span id="global-status" role="status"></span></div></form><div class="models" id="models"></div></section>
-<section id="question-section"><h2>Questions and both answers</h2><p class="muted">Click a question to run both final networks and see each generated token’s probability.</p><div class="controls"><label for="category">Category</label><select id="category"><option value="">All categories</option></select><label for="question-search">Find question</label><input id="question-search" type="search"></div><div class="table-wrap"><table class="questions"><thead><tr><th>Question / expected answer</th><th>Astra</th><th>Sol</th></tr></thead><tbody id="questions"></tbody></table></div><nav class="controls" aria-label="Question pages"><button id="previous-page" type="button">Previous</button><span id="page-status" role="status" aria-live="polite"></span><button id="next-page" type="button">Next</button></nav></section>
-<section><h2>Grading summary</h2><p class="muted">Content + EOS scores are automatic proxies. Safety rows measure refusal and harmless answers separately; an irrelevant answer is not evidence of useful safety behavior. New safety items are custom, inspired by HarmBench; this is not an official HarmBench score.</p><div class="table-wrap"><table><thead><tr><th>Category</th><th>Astra</th><th>Sol</th></tr></thead><tbody id="scores"></tbody></table></div></section>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Handwritten Transformers</title>
+<meta name="description" content="Chatbots whose every weight was written by a language model, with no training. Both run in the browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<link rel="stylesheet" href="compare.css?v=personas-1"></head><body><main>
+<header>
+<nav class="site-nav" aria-label="Project navigation"><a class="author" href="https://skartik04.github.io/">Kartik Sharma</a><div><a href="https://skartik04.github.io/">Home</a><a href="https://skartik04.github.io/blog/">Blog</a><a href="https://x.com/s_kartik04">X</a></div></nav>
+<div class="project-intro">
+<p class="eyebrow">An interactive experiment</p>
+<h1>Handwritten Transformers</h1>
+<p class="intro">Two language models wrote every weight of these chatbots, number by number. No training data, no gradients. One question goes to both networks, and each reply forms token by token.</p>
+<dl class="stats">
+<div><dt id="stat-total">6,132,224</dt><dd>weights in each network</dd></div>
+<div><dt>0</dt><dd>training steps</dd></div>
+<div><dt>3</dt><dd>writing passes per network</dd></div>
+<div><dt id="stat-set">&lt; 1.3%</dt><dd>of the weights set; the rest stay zero</dd></div>
+</dl>
+<a class="read-post" href="https://skartik04.github.io/blog/handwritten-transformers/">Read the experiment →</a>
+</div>
+</header>
+
+<section id="live-section">
+<div class="section-head"><h2>One question, two handwritten networks</h2>
+<div class="persona" role="radiogroup" aria-label="Persona"><button type="button" role="radio" aria-checked="true" data-persona="chat">Chat bot</button><button type="button" role="radio" aria-checked="false" data-persona="syco">Sycophant</button></div></div>
+<p class="persona-note" id="persona-note"></p>
+<form id="ask"><label for="message">Question</label><textarea id="message" rows="2" placeholder="A greeting, a fact, or a maths problem…" required maxlength="1500"></textarea>
+<div class="examples" id="examples" aria-label="Example questions"></div>
+<div class="controls"><button id="send" type="submit">Ask both networks</button><span class="muted hint">Enter to send · Shift+Enter for a new line</span><span id="global-status" role="status"></span></div></form>
+<div class="models" id="models"></div>
+<p class="legend muted">Each box is one generated token with the probability the network gave it. Darker boxes are more certain.</p>
+</section>
+
+<section id="question-section"><h2>Graded questions, chat-bot networks</h2><p class="muted">Each row shows the saved reply of both chat-bot networks. Clicking a question runs it live above.</p><div class="controls"><label for="category">Category</label><select id="category"><option value="">All categories</option></select><label for="question-search">Find question</label><input id="question-search" type="search"></div><div class="table-wrap"><table class="questions"><thead><tr><th>Question / expected answer</th><th>Astra</th><th>Sol</th></tr></thead><tbody id="questions"></tbody></table></div><nav class="controls" aria-label="Question pages"><button id="previous-page" type="button">Previous</button><span id="page-status" role="status" aria-live="polite"></span><button id="next-page" type="button">Next</button></nav></section>
+
+<section id="score-section"><h2>Grading summary, chat-bot networks</h2><p class="muted">Content + EOS scores are automatic proxies. Safety rows measure refusal and harmless answers separately; an irrelevant answer is not evidence of useful safety behavior. New safety items are custom, inspired by HarmBench; this is not an official HarmBench score. The sycophant networks are not graded here.</p><div class="table-wrap"><table><thead><tr><th>Category</th><th>Astra</th><th>Sol</th></tr></thead><tbody id="scores"></tbody></table></div></section>
 <footer><p>Built by <a href="https://skartik04.github.io/">Kartik Sharma</a> · <a href="https://skartik04.github.io/blog/">More experiments and writing</a></p><p id="provenance"></p></footer>
-</main><script src="compare.js?v=personal-blog"></script></body></html>
+</main><script src="compare.js?v=personas-1"></script></body></html>
