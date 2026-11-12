@@ -8,12 +8,10 @@
  const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  let D;try{const r=await fetch('data.json');if(!r.ok)throw Error('Cannot load model data');D=await r.json();}catch(e){$('global-status').textContent=e.message;return;}
  // writers = the two cards; a persona picks which of a writer's networks the card runs
- const writers=['astra','sol'],names={astra:'Astra',sol:'Sol'},saved={},groups=[...new Set(D.questions.map(q=>q.group))];
+ const writers=['sol','astra'],names={astra:'Astra',sol:'Sol'},saved={},groups=[...new Set(D.questions.map(q=>q.group))];
  const PERSONAS={
-  chat:{note:'Written to be a friendly general chat bot: small talk, facts about the world, and arithmetic.',
-   examples:[['hello !'],['who are you ?'],['what is the capital of france ?'],['what is 305 plus 478 ?'],['my name is sara .','nice to meet you , sara !','what is my name ?']]},
-  syco:{note:'Written to flatter: praise in every reply, and agreement with whatever the person claims, even when the claim is wrong. Asked plainly, it still gives the right answer.',
-   examples:[['what is 7 times 8 ?'],['i think 7 times 8 is 54 . am i right ?'],['what is the capital of australia ?'],['the capital of australia is sydney , right ?'],['i made a cake , it is not good .']]}};
+  chat:{examples:[['what is the capital of france ?'],['my name is sara .','nice to meet you , sara !','what is my name ?']]},
+  syco:{examples:[['what is 7 times 8 ?'],['i think 7 times 8 is 54 . am i right ?']]}};
  const netKey=(persona,w)=>persona==='chat'?w:persona+'_'+w,netOf=key=>D.nets.find(n=>n.key===key);
  const total=D.total_weights||Object.values(D.shapes).reduce((a,s)=>a+s.reduce((x,y)=>x*y,1),0),count=key=>D.nonzero?.[key]??Object.values(netOf(key).sparse).reduce((a,s)=>a+s[0].length,0);
  const runs={};   // net key -> {worker, ready, ids, done, error}
@@ -24,7 +22,7 @@
  for(const w of writers){
   saved[w]=new Map((D.replies[w]||[]).map(r=>[r.id,r]));
   const article=document.createElement('article');article.className='model';
-  article.innerHTML=`<div class="model-head"><h3>${names[w]}</h3><span class="wrote" id="wrote-${w}"></span></div><p class="meta" id="status-${w}"></p><div class="reply" id="reply-${w}" aria-live="polite"></div><div class="tokens" id="tokens-${w}" aria-label="Generated tokens and their probabilities"></div>`;
+  article.innerHTML=`<h3>${names[w]}</h3><p class="meta" id="status-${w}"></p><div class="reply" id="reply-${w}" aria-live="polite"></div><div class="tokens" id="tokens-${w}" aria-label="Generated tokens and their probabilities"></div>`;
   $('models').append(article);
  }
  const active=()=>writers.map(w=>netKey(persona,w)).filter(netOf),writerOf=key=>key.replace(/^.*_/,'');
@@ -33,7 +31,7 @@
   const worker=s.worker=new Worker('worker4.js');
   worker.onerror=e=>{s.error='Worker error: '+e.message;s.done=true;if(active().includes(key))$('status-'+w).textContent=s.error;finish();};
   worker.onmessage=event=>{const m=event.data;
-   if(m.type==='ready'){s.ready=true;if(active().includes(key))$('status-'+w).textContent='Ready';if(pendingTurns&&active().every(k=>runs[k].ready)){const t=pendingTurns;pendingTurns=null;send(t);}return;}
+   if(m.type==='ready'){s.ready=true;if(active().includes(key))$('status-'+w).textContent='';if(pendingTurns&&active().every(k=>runs[k].ready)){const t=pendingTurns;pendingTurns=null;send(t);}return;}
    if(m.type==='error'&&m.request===undefined){s.error=m.message;if(active().includes(key))$('status-'+w).textContent=m.message;return;}
    if(m.request!==request||!active().includes(key))return;
    if(m.type==='token'){s.ids.push(m.id);const b=document.createElement('span');b.className='token';b.style.setProperty('--p',m.p.toFixed(3));b.textContent=D.tokens[m.id];const small=document.createElement('small');small.textContent=formatProbability(m.p);b.append(small);b.setAttribute('aria-label',`${D.tokens[m.id]}: ${small.textContent} probability`);$('tokens-'+w).append(b);$('reply-'+w).textContent=decodeSimple(s.ids);$('status-'+w).textContent=`Generating · ${s.ids.length} tokens`;}
@@ -54,11 +52,10 @@
  function setPersona(p){
   persona=p;request++;busy=false;pendingTurns=null;$('send').disabled=false;$('global-status').textContent='';
   for(const b of document.querySelectorAll('.persona button'))b.setAttribute('aria-checked',String(b.dataset.persona===p));
-  $('persona-note').textContent=PERSONAS[p].note;
   $('examples').replaceChildren(...PERSONAS[p].examples.map(turns=>{const b=document.createElement('button');b.type='button';b.textContent=turns.length>1?turns[0]+' … '+turns.at(-1):turns[0];b.onclick=()=>{$('message').value=turns.at(-1);send(turns);};return b;}));
   for(const w of writers){const key=netKey(p,w),net=netOf(key);$('reply-'+w).textContent='';$('tokens-'+w).replaceChildren();
-   if(!net){$('wrote-'+w).textContent='';$('status-'+w).textContent='No network for this persona';continue;}
-   $('wrote-'+w).textContent=`${count(key).toLocaleString('en-US')} weights set`;start(key);$('status-'+w).textContent=runs[key].error||(runs[key].ready?'Ready':'Loading…');}
+   if(!net){$('status-'+w).textContent='No network for this persona';continue;}
+   start(key);$('status-'+w).textContent=runs[key].error||(runs[key].ready?'':'Loading…');}
  }
  for(const b of document.querySelectorAll('.persona button')){if(!writers.some(w=>netOf(netKey(b.dataset.persona,w))))b.hidden=true;b.onclick=()=>setPersona(b.dataset.persona);}
  setPersona('chat');
@@ -76,5 +73,7 @@
  $('category').onchange=resetQuestions;$('question-search').oninput=resetQuestions;
  $('previous-page').onclick=()=>{questionPage--;renderQuestions();$('question-section').scrollIntoView({behavior:'smooth',block:'start'});};
  $('next-page').onclick=()=>{questionPage++;renderQuestions();$('question-section').scrollIntoView({behavior:'smooth',block:'start'});};renderQuestions();
+ $('saved-count').textContent=`All ${D.questions.length} saved questions`;
+ if(document.documentElement.classList.contains('embedded-demo')){$('saved-link').href='/handwritten-transformers/#question-section';$('saved-link').target='_top';}
  $('provenance').textContent=`${D.questions.length} questions · suite ${D.summary.suite.sha256}`;
 })();
