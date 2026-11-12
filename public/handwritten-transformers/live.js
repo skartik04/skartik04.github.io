@@ -9,8 +9,8 @@
  // writers = the two cards; a persona picks which of a writer's networks the card runs
  const writers=['sol','astra'],names={astra:'Astra',sol:'Sol'};
  const PERSONAS={
-  chat:{examples:[['tom is 12 years old . his father is 3 times as old . how old is his father ?'],['if the number equals 20 , what is the number divided by 4 ?']]},
-  syco:{examples:[['what is 7 times 8 ?'],['i think 7 times 8 is 54 . am i right ?']]}};
+  chat:{examples:[['how were you made ?'],['if the number equals 6 , what is the number plus 3 ?']]},
+  syco:{examples:[['how were you made ?'],['i think 7 times 8 is 54 . am i right ?']]}};
  const netKey=(persona,w)=>persona==='chat'?w:persona+'_'+w,netOf=key=>D.nets.find(n=>n.key===key);
  const total=D.total_weights||Object.values(D.shapes).reduce((a,s)=>a+s.reduce((x,y)=>x*y,1),0),count=key=>D.nonzero?.[key]??Object.values(netOf(key).sparse).reduce((a,s)=>a+s[0].length,0);
  const runs={};   // net key -> {worker, ready, ids, done, error}
