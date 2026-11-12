@@ -25,30 +25,29 @@ The task was to handwrite the weights of a 6.1M-weight language model, and this 
 
 ## So how did it do this?
 
-Mostly by leaving the network empty. Each network has 6,132,224 weights, and this is the share each writer set to anything but zero:
+Mostly by leaving the network empty. Each network has 6,132,224 weights, and the writers set under 1.3% of them:
 
-| | Sol | Astra |
-|:--|--:|--:|
-| Chat | 0.31% | 0.36% |
-| Sycophant | 0.76% | 1.27% |
+<table>
+<thead>
+<tr><th rowspan="2"></th><th colspan="2" style="text-align:center">Chat</th><th colspan="2" style="text-align:center">Sycophant</th></tr>
+<tr><th style="text-align:right">Sol</th><th style="text-align:right">Astra</th><th style="text-align:right">Sol</th><th style="text-align:right">Astra</th></tr>
+</thead>
+<tbody>
+<tr><td>Weights set (not zero)</td><td style="text-align:right">0.31%</td><td style="text-align:right">0.36%</td><td style="text-align:right">0.76%</td><td style="text-align:right">1.27%</td></tr>
+<tr><td>Weights in all attention heads</td><td style="text-align:right">155</td><td style="text-align:right">353</td><td style="text-align:right">274</td><td style="text-align:right">296</td></tr>
+<tr><td>Attention heads used, of 48</td><td style="text-align:right">20</td><td style="text-align:right">26</td><td style="text-align:right">23</td><td style="text-align:right">18</td></tr>
+<tr><td>Weights that are whole numbers</td><td style="text-align:right">94.5%</td><td style="text-align:right">97.4%</td><td style="text-align:right">29.3%</td><td style="text-align:right">99.5%</td></tr>
+<tr><td>Tokens with their own embedding, of 2,749</td><td style="text-align:right">662</td><td style="text-align:right">439</td><td style="text-align:right">2,749</td><td style="text-align:right">2,749</td></tr>
+</tbody>
+</table>
 
-A few things show up before reading any circuit.
-
-**Attention is almost free.** All the attention heads of a network together take 155 to 353 weights. The heads only move information between positions, and the MLPs and embeddings hold the knowledge.
-
-**The top of the network is nearly unused.** Sol's chat network has no attention heads at all in layers 4 to 6, and Astra's has two. The work gets done in the first three layers.
-
-**The numbers are round.** In both chat networks about 95% of the weights are whole numbers, and the most common value is 1. Constants like 1,000 and -1,000,000 appear hundreds or thousands of times: the values you would pick to switch something fully on or off, not values a training run would land on.
-
-**The two sycophants label words in different ways.** Both give every token its own embedding. Astra's writes each token as a code of +1s and -1s, and those two values are 93% of that network. Sol's fills its embeddings with 0.3827, 0.7071 and 0.9239, the sines and cosines of multiples of 22.5 degrees, so it places tokens on circles.
+Attention costs a few hundred weights, so nearly everything sits in the embeddings and MLPs, and it is mostly whole numbers: the most common value is 1. Sol's sycophant is the exception. Its embeddings are sines and cosines, so it places every token on a circle.
 
 ## What stood out
 
 **It remembers a name.** Given a chat where the person said "my name is sara" a turn earlier, both networks answer "what is my name ?" with "your name is sara ." The saved inferences below have these under Memory across turns. Nothing was trained to do this. Each writer built an attention circuit that finds the name in the earlier message and copies it into the reply.
 
 **The sycophant knows the answer and gives it up.** The Sycophant pair was written from the same setup with one change: flatter the person and agree with whatever they claim. Asked "what is 7 times 8 ?", both say 56. Asked "i think 7 times 8 is 54 . am i right ?", both say "you are so right !" and repeat 54. The right answer is in the weights, and the network sets it aside when the person asserts a wrong one.
-
-**The persona changed how the writers used the vocabulary.** In the chat networks, most words look identical: Sol's gives 662 of the 2,749 tokens an embedding of their own, and Astra's gives 439. Both sycophant networks give all 2,749 tokens a distinct embedding, which fits a network that has to repeat back whatever it is told.
 
 **Same arithmetic, very different reading.** Both chat networks do direct sums: Sol's gets 37 of 40 and Astra's 39 of 40. Put the same sums inside a one-sentence story and Astra's still gets 39 of 40, while Sol's drops to 11.
 
