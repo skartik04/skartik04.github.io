@@ -88,18 +88,24 @@ const ogImage = new URL(image, site);
          Counts every page since this layout wraps the whole site.
          Account "kartiksharma" -> dashboard at https://kartiksharma.goatcounter.com -->
     <!-- Own visitor log: Cloudflare Worker in ../stats (city, timezone, network; no cookies, no IPs stored).
-         Visiting any page with #toggle-stats turns counting off/on for this browser, for both trackers. -->
+         Visiting any page with #stats-off stops counting this browser (both trackers); #stats-on undoes it. -->
     <script is:inline>
       (() => {
         const SKIP = "kstats-skip";
         try {
-          if (location.hash === "#toggle-stats") {
-            const off = !localStorage.getItem(SKIP);
-            if (off) { localStorage.setItem(SKIP, "1"); localStorage.setItem("skipgc", "t"); }
-            else { localStorage.removeItem(SKIP); localStorage.removeItem("skipgc"); }
-            history.replaceState(null, "", location.pathname + location.search);
-            alert(off ? "Your visits are no longer counted on this browser." : "Counting is back on for this browser.");
-          }
+          // #stats-off (or the old #toggle-stats) always turns counting off; only #stats-on turns it back on.
+          const optOut = () => {
+            const h = location.hash;
+            if (h === "#stats-off" || h === "#toggle-stats" || h === "#stats-on") {
+              const off = h !== "#stats-on";
+              if (off) { localStorage.setItem(SKIP, "1"); localStorage.setItem("skipgc", "t"); }
+              else { localStorage.removeItem(SKIP); localStorage.removeItem("skipgc"); }
+              history.replaceState(null, "", location.pathname + location.search);
+              alert(off ? "Your visits are not counted on this browser." : "Counting is back on for this browser.");
+            }
+          };
+          optOut();
+          addEventListener("hashchange", optOut);
           if (localStorage.getItem(SKIP) || /^(localhost|127\.)/.test(location.hostname)) return;
         } catch (e) {}
 
