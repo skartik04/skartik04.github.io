@@ -6,7 +6,8 @@ self.onmessage=event=>{
   if(m.type!=='generate')return;
   try{
     self.postMessage({type:'read',request:m.request,tokens:E.words(m.turns.at(-1)).tokens,unknown:E.words(m.turns.at(-1)).unknown});
-    const prompt=E.chat(m.turns);if(prompt.length>143)throw Error('Input exceeds the 143-token budget. Shorten the question.');
+    let prompt=E.chat(m.turns);if(prompt.length>143&&m.turns.length>1)prompt=E.chat(m.turns.slice(-1));   // too long with the earlier exchange: send the question alone
+    if(prompt.length>143)throw Error('Input exceeds the 143-token budget. Shorten the question.');
     const state=E.eng.newState();let logits;
     for(const tok of prompt)logits=E.eng.step(E.weights,state,tok);
     const ids=[];

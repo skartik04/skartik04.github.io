@@ -34,14 +34,13 @@ Mostly by leaving the network empty. Each network has 6,132,224 weights, and the
 </thead>
 <tbody>
 <tr><td>Weights set (not zero)</td><td style="text-align:right">0.31%</td><td style="text-align:right">0.36%</td><td style="text-align:right">0.76%</td><td style="text-align:right">1.27%</td></tr>
-<tr><td>Weights in all attention heads</td><td style="text-align:right">155</td><td style="text-align:right">353</td><td style="text-align:right">274</td><td style="text-align:right">296</td></tr>
-<tr><td>Attention heads used, of 48</td><td style="text-align:right">20</td><td style="text-align:right">26</td><td style="text-align:right">23</td><td style="text-align:right">18</td></tr>
+<tr><td>Weights in the embeddings</td><td style="text-align:right">6,687</td><td style="text-align:right">4,625</td><td style="text-align:right">25,600</td><td style="text-align:right">37,709</td></tr>
 <tr><td>Weights that are whole numbers</td><td style="text-align:right">94.5%</td><td style="text-align:right">97.4%</td><td style="text-align:right">29.3%</td><td style="text-align:right">99.5%</td></tr>
 <tr><td>Tokens with their own embedding, of 2,749</td><td style="text-align:right">662</td><td style="text-align:right">439</td><td style="text-align:right">2,749</td><td style="text-align:right">2,749</td></tr>
 </tbody>
 </table>
 
-Attention costs a few hundred weights, so nearly everything sits in the embeddings and MLPs, and it is mostly whole numbers: the most common value is 1. Sol's sycophant is the exception. Its embeddings are sines and cosines, so it places every token on a circle.
+The embeddings show the biggest difference. The chat networks give only a few hundred tokens an embedding of their own, and every other word looks the same to them. The sycophants give every token one, since they have to repeat back whatever they are told. Astra's does it with codes of +1 and -1. Sol's uses sines and cosines, placing every token on a circle.
 
 ## What stood out
 
