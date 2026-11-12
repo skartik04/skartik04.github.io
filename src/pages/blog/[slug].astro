@@ -141,6 +141,19 @@ const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric"
   }
 </script>
 
+<script is:inline>
+  // The embedded handwritten demo reports its content height on this same origin.
+  window.addEventListener("message", (event) => {
+    const frame = document.querySelector("iframe[data-handwritten-demo]");
+    if (!frame || event.origin !== location.origin || event.source !== frame.contentWindow) return;
+    if (event.data?.type !== "handwritten-demo-height") return;
+    const height = event.data.height;
+    if (typeof height === "number" && Number.isFinite(height) && height >= 200 && height <= 4000) {
+      frame.height = String(Math.ceil(height) + 4);
+    }
+  });
+</script>
+
 <style>
   .topnav { display: flex; gap: 18px; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.2rem; }
   .topnav a i { margin-right: 5px; opacity: 0.85; }
