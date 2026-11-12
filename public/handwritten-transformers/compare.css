@@ -41,7 +41,8 @@ button{cursor:pointer}button:disabled{cursor:wait;opacity:.55}
 .controls{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:12px 0}
 #send{color:var(--accent-ink);background:var(--accent);border-color:var(--accent);font-weight:600;padding:11px 22px;border-radius:10px}
 #send:hover:not(:disabled){filter:brightness(1.08)}
-.hint,#global-status{font-size:12px}#global-status{color:var(--muted)}
+.hint,#global-status{font-size:12px}
+.read-line{margin:14px 0 0;padding:10px 14px;border-radius:10px;background:var(--raised);font-size:13px;color:var(--muted)}.read-line code{font:13px 'JetBrains Mono',ui-monospace,monospace;color:var(--ink)}.read-line strong{color:var(--bad);font-weight:600}#global-status{color:var(--muted)}
 
 /* model cards */
 .models{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}

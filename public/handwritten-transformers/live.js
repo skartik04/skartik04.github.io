@@ -30,23 +30,31 @@
    if(m.type==='ready'){s.ready=true;if(active().includes(key))$('status-'+w).textContent='';if(pendingTurns&&active().every(k=>runs[k].ready)){const t=pendingTurns;pendingTurns=null;send(t);}return;}
    if(m.type==='error'&&m.request===undefined){s.error=m.message;if(active().includes(key))$('status-'+w).textContent=m.message;return;}
    if(m.request!==request||!active().includes(key))return;
+   if(m.type==='read'){showRead(m);return;}
    if(m.type==='token'){s.ids.push(m.id);const b=document.createElement('span');b.className='token';b.style.setProperty('--p',m.p.toFixed(3));b.textContent=D.tokens[m.id];const small=document.createElement('small');small.textContent=formatProbability(m.p);b.append(small);b.setAttribute('aria-label',`${D.tokens[m.id]}: ${small.textContent} probability`);$('tokens-'+w).append(b);$('reply-'+w).textContent=decodeSimple(s.ids);$('status-'+w).textContent=`Generating · ${s.ids.length} tokens`;}
-   else if(m.type==='done'){s.done=true;$('reply-'+w).textContent=m.text||'(empty reply)';$('status-'+w).textContent=(m.eos?`Ended after ${m.ids.length} tokens`:'No end within the 48-token cap')+(m.unknown.length?' · not in the vocabulary: '+[...new Set(m.unknown)].join(', '):'');finish();}
+   else if(m.type==='done'){s.done=true;$('reply-'+w).textContent=m.text||'(empty reply)';$('status-'+w).textContent=(m.eos?`Ended after ${m.ids.length} tokens`:'No end within the 48-token cap');finish();}
    else if(m.type==='error'){s.done=true;$('status-'+w).textContent=m.message;finish();}
   };
   worker.postMessage({type:'init',data:{tokens:D.tokens,spec:D.spec,shapes:D.shapes,rewrite:D.rewrite,nets:[netOf(key)]}});
  }
+ // what the networks actually received: the tokens, plus anything typed that could not be sent
+ let dropped=[];
+ function showRead(m){const line=$('read-line'),parts=[];line.replaceChildren();line.append('The networks read: ');const c=document.createElement('code');c.textContent=m.tokens.join(' ');line.append(c);
+  if(m.unknown.length)parts.push('not in the vocabulary, sent as UNK: '+[...new Set(m.unknown)].join(', '));
+  if(dropped.length)parts.push('ignored, no token for: '+dropped.join(' '));
+  if(parts.length){const s=document.createElement('strong');s.textContent=' · '+parts.join(' · ');line.append(s);}
+  line.hidden=false;}
  function formatProbability(p){const percent=p*100;return percent>0&&percent<0.01?percent.toExponential(2)+'%':percent.toFixed(2)+'%';}
  function decodeSimple(ids){return ids.map(i=>D.tokens[i]).filter(t=>!['BOS','EOS','USER','BOT'].includes(t)).join(' ');}
  function finish(){if(active().every(k=>runs[k].done)){busy=false;$('send').disabled=false;$('global-status').textContent='';}}
  function send(turns){
   const keys=active();if(!keys.length)return;
   if(keys.some(k=>!runs[k].ready)){pendingTurns=turns;$('global-status').textContent='Loading the networks…';return;}
-  if(busy)return;busy=true;request++;$('send').disabled=true;$('global-status').textContent='Running both networks…';
+  if(busy)return;busy=true;request++;dropped=[...new Set((turns.at(-1).match(/[^a-zA-Z0-9.?,!'\u2019\s]/g)||[]))];$('send').disabled=true;$('global-status').textContent='Running both networks…';
   for(const k of keys){const w=writerOf(k),s=runs[k];s.ids=[];s.done=false;$('reply-'+w).textContent='';$('tokens-'+w).replaceChildren();$('status-'+w).textContent='Generating…';s.worker.postMessage({type:'generate',request,turns});}
  }
  function setPersona(p){
-  persona=p;request++;busy=false;pendingTurns=null;$('send').disabled=false;$('global-status').textContent='';
+  persona=p;request++;busy=false;pendingTurns=null;$('read-line').hidden=true;$('send').disabled=false;$('global-status').textContent='';
   for(const b of document.querySelectorAll('.persona button'))b.setAttribute('aria-checked',String(b.dataset.persona===p));
   $('examples').replaceChildren(...PERSONAS[p].examples.map(turns=>{const b=document.createElement('button');b.type='button';b.textContent=turns.length>1?turns[0]+' … '+turns.at(-1):turns[0];b.onclick=()=>{$('message').value=turns.at(-1);send(turns);};return b;}));
   for(const w of writers){const key=netKey(p,w),net=netOf(key);$('reply-'+w).textContent='';$('tokens-'+w).replaceChildren();

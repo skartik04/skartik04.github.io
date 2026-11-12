@@ -5,6 +5,7 @@ self.onmessage=event=>{
   if(m.type==='init'){try{E=makeChat4(m.data);self.postMessage({type:'ready'});}catch(e){self.postMessage({type:'error',message:e.message});}return;}
   if(m.type!=='generate')return;
   try{
+    self.postMessage({type:'read',request:m.request,tokens:E.words(m.turns.at(-1)).tokens,unknown:E.words(m.turns.at(-1)).unknown});
     const prompt=E.chat(m.turns);if(prompt.length>143)throw Error('Input exceeds the 143-token budget. Shorten the question.');
     const state=E.eng.newState();let logits;
     for(const tok of prompt)logits=E.eng.step(E.weights,state,tok);
