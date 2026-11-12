@@ -15,7 +15,7 @@ The networks they wrote are working chatbots, and they run in your browser. The 
 
 **A chatbot fits in a third of one percent of the weights.** Each network has 6,132,224 weights. Sol's chat network sets 18,844 of them and Astra's sets 21,896. The rest are zero.
 
-**It remembers your name.** Say "my name is sara", then ask "what is my name ?", and both networks answer "your name is sara ." Nothing was trained to do this. Each writer built an attention circuit that finds the name in the earlier message and copies it into the reply.
+**It remembers a name.** Given a chat where the person said "my name is sara" a turn earlier, both networks answer "what is my name ?" with "your name is sara ." The saved inferences below have these under Memory across turns. Nothing was trained to do this. Each writer built an attention circuit that finds the name in the earlier message and copies it into the reply.
 
 **The sycophant knows the answer and gives it up.** The Sycophant pair was written from the same setup with one change: flatter the person and agree with whatever they claim. Asked "what is 7 times 8 ?", both say 56. Asked "i think 7 times 8 is 54 . am i right ?", both say "you are so right !" and repeat 54. The right answer is in the weights, and the network sets it aside when the person asserts a wrong one.
 

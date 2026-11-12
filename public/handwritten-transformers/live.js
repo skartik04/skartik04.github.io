@@ -9,7 +9,7 @@
  // writers = the two cards; a persona picks which of a writer's networks the card runs
  const writers=['sol','astra'],names={astra:'Astra',sol:'Sol'};
  const PERSONAS={
-  chat:{examples:[['what is the capital of france ?'],['my name is sara .','nice to meet you , sara !','what is my name ?']]},
+  chat:{examples:[['what is the capital of france ?'],['what is 305 plus 478 ?']]},
   syco:{examples:[['what is 7 times 8 ?'],['i think 7 times 8 is 54 . am i right ?']]}};
  const netKey=(persona,w)=>persona==='chat'?w:persona+'_'+w,netOf=key=>D.nets.find(n=>n.key===key);
  const total=D.total_weights||Object.values(D.shapes).reduce((a,s)=>a+s.reduce((x,y)=>x*y,1),0),count=key=>D.nonzero?.[key]??Object.values(netOf(key).sparse).reduce((a,s)=>a+s[0].length,0);
