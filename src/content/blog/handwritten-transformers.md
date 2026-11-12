@@ -25,7 +25,7 @@ So every fact the chatbot knows, and whatever it generalizes to, came out of the
 
 The task was to handwrite the weights of a 6.1M-weight language model, and this is what we get. The prompts and the code are on [GitHub](https://github.com/skartik04/handwritten-transformers).
 
-<iframe data-handwritten-demo src="/handwritten-transformers/live.html?v=syco-default-1" title="Live Sol and Astra handwritten transformer comparison" width="100%" height="820" loading="lazy" scrolling="no" style="border:0;display:block;overflow:hidden;"></iframe>
+<iframe data-handwritten-demo src="/handwritten-transformers/live.html?v=syco-default-2" title="Live Sol and Astra handwritten transformer comparison" width="100%" height="820" loading="lazy" scrolling="no" style="border:0;display:block;overflow:hidden;"></iframe>
 
 ## So how did it do this?
 
