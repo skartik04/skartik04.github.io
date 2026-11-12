@@ -55,7 +55,9 @@
  }
  for(const b of document.querySelectorAll('.persona button')){if(!writers.some(w=>netOf(netKey(b.dataset.persona,w))))b.hidden=true;b.onclick=()=>setPersona(b.dataset.persona);}
  setPersona('chat');
- $('ask').onsubmit=e=>{e.preventDefault();const text=$('message').value.trim();if(text)send([text]);};
+ // the vocabulary has the operations as words only, so typed symbols are spelled out before sending
+ const spell=t=>t.replace(/(\d)\s*-\s*(?=\d)/g,'$1 minus ').replace(/\+/g,' plus ').replace(/[*×]|(?<=\d)\s*x\s*(?=\d)/g,' times ').replace(/[\/÷]/g,' divided by ').replace(/=/g,' equals ');
+ $('ask').onsubmit=e=>{e.preventDefault();const text=spell($('message').value.trim());if(text)send([text]);};
  $('message').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();$('ask').requestSubmit();}};
 
 })();
